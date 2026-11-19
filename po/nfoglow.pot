@@ -1,0 +1,1012 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: NfoGlow\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: src/ui_about.py
+msgid "Mascot"
+msgstr ""
+
+#: src/ui_about.py
+msgid "3 more clicks …"
+msgstr ""
+
+#: src/ui_about.py
+msgid "2 more clicks …"
+msgstr ""
+
+#: src/ui_about.py
+msgid "1 more click …"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Recent files"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Inspired by"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Thank you for the music"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Music (CC BY 4.0)"
+msgstr ""
+
+#: src/ui_app.py
+msgid "No recent files"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Clear list"
+msgstr ""
+
+#: src/ui_app.py
+msgid "A viewer for NFO and ANSI art, the way the scene meant it: crisp block graphics with an optional soft glow, CP437 out of the box, clickable links and a text-only view."
+msgstr ""
+
+#: src/ui_app.py
+msgid "Stennish – chiptune {number} of {count}"
+msgstr ""
+
+#: src/ui_app.py
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Ctrl"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Light"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Dark"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Black & White"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Amber"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Terminal"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Paper"
+msgstr ""
+
+#: src/ui_common.py
+msgid "C64"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Custom"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Soft edges"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Neon"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Background"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Text"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Block graphics"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Links"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Automatic"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Down"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Up"
+msgstr ""
+
+#: src/ui_common.py
+msgid "C64 colors"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Color ramp colors"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Gentle"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Medium"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Strong"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Scanlines"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Shadow mask"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Aperture grille"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Few"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Some"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Many"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Drifting"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Warp flight"
+msgstr ""
+
+#: src/ui_common.py
+msgid "None"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Modem build-up"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Glitch"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Tape loader"
+msgstr ""
+
+#: src/ui_common.py
+msgid "CRT power-on"
+msgstr ""
+
+#: src/ui_common.py
+msgid "DOS boot"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Dither fade-in"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Neon flicker-on"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Code rain"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Opens at once"
+msgstr ""
+
+#: src/ui_common.py
+msgid "The NFO appears line by line, like over a 2400 baud BBS; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "A short flicker of torn lines, like a crackling loader"
+msgstr ""
+
+#: src/ui_common.py
+msgid "A C64 screen types LOAD and loads with colored stripes in its border; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "A bright line grows into the picture, like a tube TV switching on; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "A DOS prompt boots, lists the file and types it out; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "The picture builds up in dithered steps, like ░ ▒ ▓ █; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "The art flickers on like a neon sign; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Ones and zeros rain down the window and leave the NFO behind; a click or key skips it"
+msgstr ""
+
+#: src/ui_common.py
+msgid "To the music"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Breathing"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Random"
+msgstr ""
+
+#: src/ui_common.py
+msgid "In order"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Classic"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Soft"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Tube"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Retrowave"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Demoscene"
+msgstr ""
+
+#: src/ui_common.py
+msgid "General"
+msgstr ""
+
+#: src/ui_common.py
+msgid "View"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Moving around"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Opening effect"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Play the effect now"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Open"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Preferences"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Close the window"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Quit"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Art or text only"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Effects sidebar"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Undo the last change to the look"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Music on or off"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Zoom in"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Zoom out"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Default zoom"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Zoom"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Reload"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Previous NFO in the folder"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Next NFO in the folder"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Page down"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Page up"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Scroll up"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Scroll down"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Top"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Bottom"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Search"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Next match"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Previous match"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Copy"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Select all"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Save as PNG"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Mouse wheel"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Space"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Shift"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Home"
+msgstr ""
+
+#: src/ui_common.py
+msgid "End"
+msgstr ""
+
+#: src/ui_common.py
+msgid "Enter"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Theme"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "In percent; Ctrl+0 goes back to it"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Flicker"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Flickers now and then, like an old sign; needs Neon"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Pulse"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "The neon glow beats to the music, or breathes without it"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Reset all settings?"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Cancel"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Reset"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Effects"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Animation"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Music"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Appearance"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Custom colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Picking a color switches to the Custom theme"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Back to the default colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Font"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Monospace fonts only"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Glow"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Light on the block graphics"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Style"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Strength"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Text glow"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Soft light around the text, like phosphor on an old monitor"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Pulse rhythm"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Color ramp"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Each block of art runs from the top to the bottom color"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Middle"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Back to the theme’s colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Retro"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "CRT screen"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Scanlines and dark corners, like an old monitor"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Pattern"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Live CRT"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "A roll bar, flicker, noise and round corners"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Color fringe"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Red and blue edges, like an old tube or a VHS tape"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "DOS font"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "The IBM VGA font, as NFOs looked under DOS"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Random look"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "A new look at every start"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Each start shows a surprise look, only for this time; “Keep” in the effects sidebar makes it your look"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Colors in motion"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Like the demos of the C64 days"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Color cycling"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Colors move through the block graphics"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Cycling colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Cycling direction"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Logo and stars"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Wobble"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "The logo sways in a wave; the text stays still"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Wobble strength"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Starfield"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Stars behind the NFO"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Stars"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Gleam"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "A light sweeps across the art now and then"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Sparkle"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Single blocks of the art glint"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "How much sparkle"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Scroller"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Sine scroller"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "A wavy running text along the bottom"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Scroller text ({name} becomes the file name; empty: a greeting)"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "On opening"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Supported formats: MOD, XM, S3M, IT, OGG, MP3, FLAC, WAV"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Music needs GStreamer, which is not installed."
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Plays while NfoGlow is open"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Music folder"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Choose a folder with MOD, XM, S3M, IT, OGG, MP3, FLAC or WAV files"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Back to the built-in chiptunes"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Order"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Volume"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Show the track name"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "A short note at the bottom when a new track starts"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Fade in and out"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "The music starts quietly, and every track ends softly"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Behavior"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Copy text only"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Selecting and copying leave out block and line graphics"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Remember recent files"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Turning it off also clears the list"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Encoding"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Language"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Reset settings"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Back to the default values."
+msgstr ""
+
+#: src/ui_settings.py
+msgid "None: the built-in chiptunes by Stennish"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "System default"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Are you really sure?"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "The look, the language and everything else go back to their defaults."
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Off"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Sound"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Effects and sound"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Neon glow to the beat; needs Neon"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Undo: back to the look before your last change"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Undo"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Roll a new look (not saved yet)"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Colors and more…"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "This look is not saved yet."
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Keep"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Save this look as your settings"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Back"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "Back to the look in your settings"
+msgstr ""
+
+#: src/ui_sidebar.py
+msgid "More settings"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Fit width"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Save as PNG…"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Save as PDF…"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Copy look"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Paste look"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Export"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Look"
+msgstr ""
+
+#: src/ui_window.py
+msgid "About NfoGlow"
+msgstr ""
+
+#: src/ui_window.py
+msgid "NfoGlow presents {name} ... greetings to everyone who still draws by hand ... F9 opens the effects ... "
+msgstr ""
+
+#: src/ui_window.py
+msgid "Copied to the clipboard"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Look copied to the clipboard"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Open…"
+msgstr ""
+
+#: src/ui_window.py
+msgid "No NFO open"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Drop a file here or press Ctrl+O."
+msgstr ""
+
+#: src/ui_window.py
+msgid "Art"
+msgstr ""
+
+#: src/ui_window.py
+msgid "The NFO with its graphics"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Only the text, without the graphics (Ctrl+T)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Effects (F9)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Search (Ctrl+F)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Default zoom (Ctrl+0)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Save as default"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Open every NFO at this zoom from now on"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Main menu"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Previous match (Shift+Enter)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Next match (Enter)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Only files on this computer can be opened."
+msgstr ""
+
+#: src/ui_window.py
+msgid "NFO, ANSI, SRR and ZIP files"
+msgstr ""
+
+#: src/ui_window.py
+msgid "All files"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Look applied (Ctrl+Z undoes it)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "The clipboard holds no NfoGlow look code"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Open (Ctrl+O)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Zoom out (Ctrl+−)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Zoom in (Ctrl++)"
+msgstr ""
+
+#: src/ui_window.py
+msgid "This NFO is too long for a PNG. Save it as a PDF instead."
+msgstr ""
+
+#: src/ui_window.py
+msgid "No matches"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Cannot open {name}: {error}"
+msgstr ""
+
+#: src/ui_window.py
+msgid "Could not save the image: {error}"
+msgstr ""

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 DigitGram -->
+<component type="desktop-application">
+  <id>io.github.digitgram.NfoGlow</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later AND CC-BY-4.0 AND CC-BY-SA-4.0</project_license>
+  <name>NfoGlow</name>
+  <summary>View NFO and ANSI art the way it was meant</summary>
+  <summary xml:lang="de">NFO- und ANSI-Art so ansehen, wie sie gemeint ist</summary>
+  <developer id="io.github.digitgram">
+    <name>DigitGram</name>
+  </developer>
+  <description>
+    <p>
+      NfoGlow shows the info files of the release scene as they were drawn: block graphics are painted
+      as exact pixels with an optional soft glow, the text stays crisp, and CP437 works out of the box.
+    </p>
+    <p xml:lang="de">
+      NfoGlow zeigt die Info-Dateien der Release-Szene so, wie sie gezeichnet wurden: Blockgrafik wird
+      pixelgenau gemalt, auf Wunsch mit weichem Glühen, der Text bleibt scharf, und CP437 klappt ab Werk.
+    </p>
+    <ul>
+      <li>NFO, DIZ and ANSI art with colours</li>
+      <li xml:lang="de">NFO, DIZ und ANSI-Art in Farbe</li>
+      <li>Glow as soft edges or neon, a glow around the text and a colour ramp through the art</li>
+      <li xml:lang="de">Glühen als weiche Kanten oder Neon, Glühen um den Text und Farbverlauf durch die Grafik</li>
+      <li>Retro: scanlines, shadow mask or aperture grille, a live CRT with picture noise, a colour fringe like an old tube and the IBM VGA font of the old PCs</li>
+      <li xml:lang="de">Retro: Scanlines, Loch- oder Streifenmaske, Live-CRT mit Bildrauschen, Farbsaum wie bei einer alten Röhre und die IBM-VGA-Schrift der alten PCs</li>
+      <li>Demoscene mode: colour cycling, a wobbling logo, drifting or warp stars, a gleam, sparkles, a sine scroller and a glow that pulses to the beat</li>
+      <li xml:lang="de">Demoszene-Modus: Farbzyklus, wabbelndes Logo, treibende oder Warp-Sterne, Glanzlicht, Glitzern, Laufschrift und Glühen im Takt der Musik</li>
+      <li>Eight effects on opening, from a 2400 baud modem build-up to a C64 tape loader, a DOS boot and a code rain</li>
+      <li xml:lang="de">Acht Effekte beim Öffnen, vom Modem mit 2400 Baud über den C64-Kassettenlader und den DOS-Start bis zum Code-Regen</li>
+      <li>Six styles that set all effects at once, a random look with one click, and undo</li>
+      <li xml:lang="de">Sechs Stile, die alle Effekte auf einmal setzen, ein zufälliger Look per Klick und Rückgängig</li>
+      <li>Optional music: nine chiptunes by Stennish (CC BY 4.0), or your MOD/XM/S3M/IT tracks</li>
+      <li xml:lang="de">Musik auf Wunsch: neun Chiptunes von Stennish (CC BY 4.0) oder deine MOD/XM/S3M/IT-Tracks</li>
+      <li>Seven themes, among them black on white and the C64 screen, plus your own colours, any monospace font, zoom</li>
+      <li xml:lang="de">Sieben Farbschemata, darunter Schwarz-Weiß und der C64-Bildschirm, plus eigene Farben, jede Festbreitenschrift, Zoom</li>
+      <li>Text-only view, search and copying without the art</li>
+      <li xml:lang="de">Nur-Text-Ansicht, Suche und Kopieren ohne die Grafik</li>
+      <li>Browse a release folder, open NFOs straight from ZIP and ReScene (.srr) files</li>
+      <li xml:lang="de">Release-Ordner durchblättern, NFOs direkt aus ZIP- und ReScene-Dateien (.srr) öffnen</li>
+      <li>Repairs NFOs broken by a wrong encoding</li>
+      <li xml:lang="de">Repariert NFOs mit kaputter Zeichenkodierung</li>
+      <li>Clickable links and export as PNG or PDF</li>
+      <li xml:lang="de">Anklickbare Links und Export als PNG oder PDF</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.digitgram.NfoGlow.desktop</launchable>
+  <url type="homepage">https://github.com/DigitGram/nfoglow</url>
+  <url type="bugtracker">https://github.com/DigitGram/nfoglow/issues</url>
+  <url type="vcs-browser">https://github.com/DigitGram/nfoglow</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/demoscene.png</image>
+      <caption>The Demoscene style with the effects sidebar</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/light.png</image>
+      <caption>An NFO in the light theme with neon glow</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/dark.png</image>
+      <caption>Dark theme with neon glow and colour ramp</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/c64.png</image>
+      <caption>The C64 theme with its light blue border</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/crt.png</image>
+      <caption>Amber theme as a tube with shadow mask and scanlines</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/preferences.png</image>
+      <caption>The effects in the preferences</caption>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <provides>
+    <mediatype>text/x-nfo</mediatype>
+    <mediatype>text/x-ansi</mediatype>
+    <mediatype>application/x-srr</mediatype>
+  </provides>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <branding>
+    <color type="primary" scheme_preference="light">#a9d8ff</color>
+    <color type="primary" scheme_preference="dark">#1d2340</color>
+  </branding>
+  <releases>
+    <release version="1.0" date="2026-11-20">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+</component>

@@ -1,0 +1,88 @@
+# Flatpak build. Local test (needs org.gnome.Sdk//51 from Flathub):
+#   flatpak-builder --user --install --force-clean build flatpak/io.github.digitgram.NfoGlow.yml
+# Headless smoke test of the build, on a display of its own (never on your desktop): see tests/smoke_gtk.py
+# For Flathub, replace the "dir" source with a git source (url + tag + commit) of the release.
+id: io.github.digitgram.NfoGlow
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: nfoglow
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # read-only, for one feature: the arrow keys step through the other NFOs in the folder of the open file.
+  # Without it the portal hands over only the opened file. NfoGlow never writes except where you save an export.
+  - --filesystem=home:ro
+modules:
+  # The GNOME runtime has no GStreamer plugin for tracker music (MOD, XM, S3M, IT). libopenmpt plays it, and from
+  # gst-plugins-bad (the same version as the runtime's GStreamer) only its "openmpt" plugin is built.
+  - name: libopenmpt
+    config-opts:
+      - --disable-static
+      - --disable-openmpt123
+      - --disable-examples
+      - --disable-tests
+      - --without-portaudio
+      - --without-portaudiocpp
+      - --without-pulseaudio
+      - --without-sdl2
+      - --without-sndfile
+      - --without-flac
+      - --without-mpg123
+      - --without-ogg
+      - --without-vorbis
+      - --without-vorbisfile
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /share/doc
+      - /share/man
+      - '*.la'
+    sources:
+      - type: archive
+        url: https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.8.10+release.autotools.tar.gz
+        sha256: 976d259288c40cd285771f77d09eff3d02514511d5677ecfcfb53be5013317e2
+  - name: gst-plugin-openmpt
+    buildsystem: meson
+    config-opts:
+      - -Dauto_features=disabled
+      - -Dopenmpt=enabled
+      - -Dtests=disabled
+      - -Dexamples=disabled
+      - -Dintrospection=disabled
+      - -Ddoc=disabled
+      - -Dnls=disabled
+    post-install:
+      # the plugin needs libgstbadaudio; the other libraries of gst-plugins-bad are in the runtime already
+      - find /app/lib -maxdepth 1 -name 'libgst*-1.0.so*' ! -name 'libgstbadaudio-1.0.so*' -delete
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/girepository-1.0
+      - /share/gir-1.0
+      - /share/locale
+    sources:
+      - type: archive
+        url: https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.6.tar.xz
+        sha256: 6636f2c2289ceda52c4aba971338c81e2b5780d3381bd3673c1c116ec87587c3
+  - name: nfoglow
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 -t /app/share/nfoglow src/*.py
+      - chmod 755 /app/share/nfoglow/nfoglow.py
+      - install -Dm644 -t /app/share/nfoglow/po po/*.po
+      - install -Dm644 -t /app/share/nfoglow/music data/music/*
+      - install -Dm644 -t /app/share/nfoglow/fonts data/fonts/*
+      - install -d /app/bin && ln -s ../share/nfoglow/nfoglow.py /app/bin/nfoglow
+      - sed -e 's|@EXEC@|nfoglow|' -e 's|@ICON@|io.github.digitgram.NfoGlow|' data/nfoglow.desktop.in
+        > io.github.digitgram.NfoGlow.desktop
+      - install -Dm644 -t /app/share/applications io.github.digitgram.NfoGlow.desktop
+      - install -Dm644 -t /app/share/metainfo data/io.github.digitgram.NfoGlow.metainfo.xml
+      - install -Dm644 data/io.github.digitgram.NfoGlow.mime.xml /app/share/mime/packages/io.github.digitgram.NfoGlow.xml
+      # every icon is named after the app id (the file icon too), which is all Flatpak exports
+      - cd data/icons && for f in $(find hicolor -type f); do install -Dm644 "$f" "/app/share/icons/$f"; done
+    sources:
+      - type: dir
+        path: ..

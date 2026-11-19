@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- text/x-nfo comes with shared-mime-info; this adds *.diz and the icon. text/x-ansi is new. -->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-nfo">
+    <glob pattern="*.diz"/>
+    <icon name="io.github.digitgram.NfoGlow-nfo"/>
+    <generic-icon name="io.github.digitgram.NfoGlow-nfo"/>
+  </mime-type>
+  <mime-type type="text/x-ansi">
+    <comment>ANSI art</comment>
+    <comment xml:lang="de">ANSI-Art</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.ans"/>
+    <icon name="io.github.digitgram.NfoGlow-nfo"/>
+    <generic-icon name="io.github.digitgram.NfoGlow-nfo"/>
+  </mime-type>
+  <mime-type type="application/x-srr">
+    <comment>ReScene file</comment>
+    <comment xml:lang="de">ReScene-Datei</comment>
+    <magic><match type="string" offset="0" value="iii"/></magic>
+    <glob pattern="*.srr"/>
+    <icon name="io.github.digitgram.NfoGlow-nfo"/>
+    <generic-icon name="io.github.digitgram.NfoGlow-nfo"/>
+  </mime-type>
+</mime-info>

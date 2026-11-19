@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=NfoGlow
+GenericName=NFO Viewer
+GenericName[de]=NFO-Betrachter
+Comment=View NFO and ANSI art files
+Comment[de]=NFO- und ANSI-Art-Dateien anzeigen
+Exec=@EXEC@ %F
+Icon=@ICON@
+Terminal=false
+StartupNotify=true
+StartupWMClass=io.github.digitgram.NfoGlow
+Categories=Utility;Viewer;GTK;
+MimeType=text/x-nfo;text/x-ansi;application/x-srr;
+Keywords=nfo;diz;ansi;srr;rescene;ascii;art;scene;cp437;release;
+Keywords[de]=nfo;diz;ansi;srr;rescene;ascii;art;szene;cp437;release;
