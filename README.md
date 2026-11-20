@@ -1,24 +1,52 @@
 <p align="center">
-  <img src="docs/banner.png" alt="NfoGlow: NFO art that glows. Pixel-exact NFO and ANSI art on GNOME, with glow, animations, effects and chiptunes">
+  <img src="data/icons/hicolor/scalable/apps/io.github.digitgram.NfoGlow.svg" width="96" height="96" alt="NfoGlow icon">
 </p>
 
-# NfoGlow
+<h1 align="center">NfoGlow</h1>
 
-[![tests](https://github.com/DigitGram/nfoglow/actions/workflows/test.yml/badge.svg)](https://github.com/DigitGram/nfoglow/actions/workflows/test.yml)
+<p align="center">
+  <b>NFO and ANSI art, the way the scene meant it.</b> A viewer for <code>.nfo</code>, <code>.diz</code> and <code>.ans</code> files on Linux,<br>
+  with exact pixels, glow, animations, effects and chiptunes. Installs for your user, no root needed.
+</p>
 
-**NFO and ANSI art, the way the scene meant it.** A viewer for `.nfo`, `.diz` and `.ans` files on Linux,
-inspired by the Windows classic [iNFekt](https://github.com/syndicodefront/infekt).
-More on the [project website](https://digitgram.github.io/nfoglow/).
+<p align="center">
+  <a href="https://github.com/DigitGram/nfoglow/actions/workflows/test.yml"><img src="https://github.com/DigitGram/nfoglow/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="License: GPL-3.0"></a>
+  <a href="https://github.com/DigitGram/nfoglow/releases/latest"><img src="https://img.shields.io/github/v/release/DigitGram/nfoglow" alt="Latest release"></a>
+</p>
+
+<p align="center">
+  <a href="#install"><b>Install</b></a> ·
+  <a href="#keyboard">Keyboard</a> ·
+  <a href="#verify-the-download">Verify the download</a> ·
+  <a href="https://digitgram.github.io/nfoglow/">Website</a> ·
+  <a href="#support">Support</a>
+</p>
+
+<p align="center">
+  <img src="docs/media/nfoglow-tour.webp" width="100%" alt="A tour of NfoGlow: effects on opening, neon glow, the demoscene mode, a retro tube, eight themes and six styles, shown on the demo NFO">
+</p>
+
+Inspired by the Windows classic [iNFekt](https://github.com/syndicodefront/infekt).
 
 Most text viewers draw the block characters `█ ▀ ▄ ░ ▒ ▓` with a font, which leaves gaps and seams in the art.
 NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the text crisp.
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/dark.png">
-    <img src="docs/screenshots/light.png" width="70%" alt="An NFO with neon glow and a colour ramp through the block art">
-  </picture>
-</p>
+## Contents
+
+- [What you get](#what-you-get)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Verify the download](#verify-the-download)
+- [Flatpak](#flatpak)
+- [Privacy](#privacy)
+- [Keyboard](#keyboard)
+- [Command line](#command-line)
+- [Translating](#translating)
+- [Development](#development)
+- [How it was made](#how-it-was-made)
+- [Support](#support)
+- [License](#license)
 
 ## What you get
 
@@ -56,20 +84,23 @@ Older systems are not supported; the installer stops with an install hint.
 
 ## Install
 
-One line (installs for the current user only, no root):
+NfoGlow installs for the current user only. It needs no root and refuses to run under `sudo`. The installer
+downloads exactly the version it belongs to, and releases are [signed](#verify-the-download).
+
+Read it first, then run it:
+
+```sh
+curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh
+less install.sh && bash install.sh
+```
+
+Or the short way, if you trust the signed release:
 
 ```sh
 curl -fsSL https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh | bash
 
 # no curl (e.g. a fresh Ubuntu)? wget does the same:
 wget -qO- https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh | bash
-```
-
-Prefer to read the script first? Download it, inspect it, then run it:
-
-```sh
-curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh
-less install.sh && bash install.sh
 ```
 
 Or from a checkout: `git clone https://github.com/DigitGram/nfoglow && cd nfoglow && ./install.sh`.
