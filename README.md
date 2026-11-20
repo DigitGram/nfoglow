@@ -22,44 +22,18 @@ NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the 
 
 ## What you get
 
-- **Clean art.** Block graphics as exact pixels without seams.
-- **Glow, and more.** Soft edges or a neon glow behind crisp blocks, in five strengths,
-  with an optional flicker like an old sign; a soft phosphor glow around the text; a colour ramp that runs through every
-  block of art; and scanlines, a shadow mask or an aperture grille like an old monitor, or a live CRT with a
-  rolling bar, flicker, picture noise and round corners, plus a colour fringe like an old tube or a VHS tape, and the
-  IBM VGA font of the old PCs for the text. All in the Effects sidebar (F9), which moves the NFO aside instead of
-  covering it.
-- **Styles.** Classic (no effects), Soft, Neon, Tube, Retrowave and Demoscene set all effects with one click; every
-  effect can still be fine-tuned on its own.
-- **Demoscene mode.** Colour cycling in C64 colours (or your own), a wobbling
-  logo, drifting or warp stars, a sine scroller, a gleam that sweeps across the art, sparkles, and a neon
-  glow that pulses to the beat of the music. On opening, one of eight effects (a choice, with a preview
-  button): modem build-up (line by line, like a 2400 baud BBS), glitch, C64 tape loader (`LOAD"…",8,1`, then coloured
-  stripes in the border), CRT power-on, DOS boot (boot message, `VER`, `DIR` and `TYPE` of the file), dither fade-in (░ ▒ ▓ █), a neon flicker-on or a code rain of ones and zeros that leaves the NFO behind. Off by default; animations only run while the window is visible.
-- **Random look.** Roll a new combination of theme, glow, colours, animation, tube and opening effect with one click, keep the
-  one you like, or get a new look at every start. Your settings stay until you keep one. Undo (Ctrl+Z) takes
-  back any change to the look, step by step.
-- **Music.** Nine built-in chiptunes by Stennish, each with its intro and a seamless loop, or your own folder of MOD,
-  XM, S3M and IT tracks (e.g. from [The Mod Archive](https://modarchive.org)) or OGG, MP3, FLAC and WAV, in random order or in a row. Fades in; off by default.
-- **CP437 out of the box.** UTF-8 files are detected, and NFOs that an editor broke into UTF-8 (`ÛÛÛ` instead
-  of `███`) are repaired. CP850 and Latin-1 can be chosen by hand.
-- **ANSI art in colour.** 16 colours with iCE colours, 256 colours, true colour and cursor movement; SAUCE is read.
-- **Browse a release folder** with ← and →, open the NFO **straight from a ZIP or a ReScene `.srr`**, and pick from
-  the **recent files** on the Open button.
-- **Reloads by itself** when the file changes, handy while you draw an NFO (F5 also works).
-- **Text only.** One click (Ctrl+T) hides the art and shows just the release info.
-- **Copy without the art.** Selecting and copying skip block and line graphics (can be turned off).
-- **Share your look.** Main menu > Look > Copy look puts one line of text (`nfoglow:1:…`) on the clipboard; whoever
-  pastes it with Paste look gets your theme, colours, effects and the DOS font (Ctrl+Z undoes it). Nothing else is shared: no paths,
-  no music folder, no file list.
-- **Search** with highlighting (Ctrl+F), **clickable web and e-mail links**, **zoom** (Ctrl + wheel, Ctrl +/−/0, fit width).
-- **Seven themes plus your own colours:** Light, Dark, Black & White, Amber, Terminal, Paper, C64 (the blue screen in its
-  light blue border) and Custom; any monospace font. Each theme brings a colour ramp of its own that matches it
-  (until you set the ramp by hand).
-- **Save as PNG or PDF** (Ctrl+S); the PDF keeps the text selectable. From the shell: `nfoglow --png out.png file.nfo`
-  (or `out.pdf`).
-- **Native look.** GTK 4 and libadwaita, in ten languages: English, German, Spanish, French, Italian, Brazilian
-  Portuguese, Polish, Ukrainian, Japanese and Simplified Chinese.
+- **Clean art.** Block graphics as exact pixels, without seams.
+- **Effects (F9).** Neon glow, phosphor glow, colour ramps, scanlines, shadow mask, a live CRT and the IBM VGA font. The sidebar moves the NFO aside instead of covering it.
+- **Styles.** Classic, Soft, Neon, Tube, Retrowave and Demoscene set everything with one click; every effect can still be tuned on its own.
+- **Demoscene mode.** Colour cycling, wobbling logo, stars, sine scroller, sparkles and a glow that pulses to the music, plus one of eight opening effects (modem build-up, C64 loader, DOS boot, CRT power-on, code rain and more). Off by default.
+- **Random look.** Roll a new combination with one click, keep it or get a fresh one at every start. Ctrl+Z undoes any change.
+- **Music.** Nine built-in chiptunes by Stennish, or your own folder of MOD, XM, S3M, IT, OGG, MP3, FLAC and WAV (e.g. from [The Mod Archive](https://modarchive.org)). Off by default.
+- **Reads old NFOs right.** CP437 out of the box, broken UTF-8 repaired, CP850 and Latin-1 on request. ANSI art in 16, 256 and true colour, SAUCE included.
+- **Handy.** Open straight from a ZIP or ReScene `.srr`, browse a release folder with ← and →, reload on file change, search (Ctrl+F), clickable links, zoom, text-only view (Ctrl+T) and copying without the art.
+- **Themes.** Light, Dark, Black & White, Amber, Terminal, Paper, C64 and Custom, with any monospace font.
+- **Share your look.** Copy look puts one line of text on the clipboard, Paste look applies it. No paths or file lists are shared.
+- **Save as PNG or PDF** (Ctrl+S), also from the shell: `nfoglow --png out.png file.nfo`.
+- **Native look.** GTK 4 and libadwaita, in ten languages.
 
 <p align="center">
   <img src="docs/screenshots/demoscene.png" width="32%" alt="The Demoscene style with the effects sidebar: colour cycling, stars and the sine scroller">
