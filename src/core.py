@@ -7,12 +7,13 @@ import json
 import os
 import re
 import textwrap
+import time
 import zlib
 
 import cairo
 from gi.repository import GLib
 
-__version__ = "1.0"
+__version__ = "1.1"
 APP_ID = "io.github.digitgram.NfoGlow"
 AUTHOR = "DigitGram"
 COPYRIGHT = "© 2026 DigitGram"
@@ -40,7 +41,8 @@ DEFAULTS = {"theme": "light", "font": FONT, "zoom": 100, "soft": True, "glow": 3
             "wobble": False, "wobble_amount": "mid", "stars_mode": "drift", "music_info": True,
             "maximized": False, "pulse_mode": "beat", "opening": "off", "text_glow": False,
             "neon_flicker": False, "sheen": False, "sparkle": False, "sparkle_amount": "some", "chroma": False,
-            "crt_mask": "lines"}
+            "crt_mask": "lines",
+            "update_check": False, "update_last": 0}   # weekly check at start: off until the user switches it on
 
 
 COLOUR = re.compile(r"#[0-9a-fA-F]{6}")
@@ -75,6 +77,46 @@ def save_settings(cfg):
         os.replace(CONFIG + ".tmp", CONFIG)   # never leaves a half-written file
     except OSError:
         pass   # settings are a convenience; the viewer keeps working
+
+
+# ----------------------------------------------------------------------------- update check
+# Opt-in and never automatic beyond a notice: one GET to GitHub's "latest release", no data sent, nothing downloaded or installed.
+# Updating stays "run the signed install.sh again". Not offered in a Flatpak: its store brings the updates.
+RELEASES_API = "https://api.github.com/repos/DigitGram/nfoglow/releases/latest"
+UPDATE_INTERVAL = 7 * 24 * 3600
+
+
+def update_check_offered():
+    return not os.path.exists("/.flatpak-info")
+
+
+def version_tuple(text):
+    """"v1.2.1" -> (1, 2, 1); None if it does not look like a version."""
+    parts = re.fullmatch(r"v?(\d+(?:\.\d+)*)", text.strip())
+    return tuple(int(n) for n in parts[1].split(".")) if parts else None
+
+
+def latest_release(timeout=5):
+    """(version, page) of the newest release, or raises OSError/ValueError (offline, rate limit, odd answer)."""
+    import urllib.request
+    request = urllib.request.Request(RELEASES_API, headers={"Accept": "application/vnd.github+json", "User-Agent": f"NfoGlow/{__version__}"})
+    with urllib.request.urlopen(request, timeout=timeout) as answer:
+        data = json.load(answer)
+    tag, page = data["tag_name"], data["html_url"]
+    if not isinstance(tag, str) or version_tuple(tag) is None or not str(page).startswith("https://github.com/DigitGram/"):
+        raise ValueError("unexpected answer")
+    return tag.lstrip("v"), page
+
+
+def newer_release():
+    """(version, page) if a newer release exists, else None; raises like latest_release()."""
+    version, page = latest_release()
+    return (version, page) if version_tuple(version) > version_tuple(__version__) else None
+
+
+def update_due(cfg, now=None):
+    """True when the weekly check is switched on in `cfg` and the last one is over a week ago."""
+    return update_check_offered() and cfg["update_check"] and (now or time.time()) - cfg["update_last"] >= UPDATE_INTERVAL
 
 
 LOOK_PREFIX = "nfoglow:1:"   # the 1 is the format: a later one is read by its own prefix, the old ones stay readable
