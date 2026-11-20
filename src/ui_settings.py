@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 DigitGram
 """The preferences dialog (General, Effects, Animation, Music). A mixin of App: its methods use the app's settings."""
+import threading
+
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
@@ -27,7 +29,7 @@ class SettingsDialog:
         surprise, glow, colors, motion, logo, scroll, opening, retro = self._effects()
         behave, reset = self._behavior(d)
         # General first (the dialog opens there): behavior, look, and the reset at the very end
-        for title, icon, groups in ((_("General"), "preferences-system-symbolic", (behave, *self._appearance(), reset)),
+        for title, icon, groups in ((_("General"), "preferences-system-symbolic", (behave, *self._appearance(), *self._updates(), reset)),
                                     (_("Effects"), "preferences-color-symbolic", (surprise, glow, colors, retro)),
                                     (_("Animation"), "media-playback-start-symbolic", (motion, logo, scroll, opening)),
                                     (_("Music"), "audio-x-generic-symbolic", (self._music(),))):
@@ -245,9 +247,63 @@ class SettingsDialog:
         reset.connect("clicked", lambda *a: self._confirm_reset(dialog))
         row = Adw.ActionRow(title=_("Reset settings"), subtitle=_("Back to the default values."))
         row.add_suffix(reset)
-        info = Adw.PreferencesGroup()
+        info = Adw.PreferencesGroup(title=_("Other"))
         info.add(row)
         return behave, info
+
+    def _updates(self):
+        """A switch for the weekly check at start (off by default) and a row that checks right now and then says what it found.
+        A newer release found at the start is already shown here."""
+        if not core.update_check_offered():
+            return ()
+        group = Adw.PreferencesGroup(title=_("Updates"))
+        group.add(self._switch(_("Check for updates weekly"),
+                               _("Asks GitHub once a week for the newest version. Nothing is sent and nothing is installed."), "update_check"))
+        self._update_row = Adw.ActionRow()
+        self._update_button = Gtk.Button(valign=Gtk.Align.CENTER)
+        self._update_button.connect("clicked", self._update_clicked)
+        self._update_row.add_suffix(self._update_button)
+        self._update_row.set_activatable_widget(self._update_button)
+        self._show_update_state()
+        group.add(self._update_row)
+        return (group,)
+
+    def _show_update_state(self):
+        found = self.update_found
+        self._update_button.set_sensitive(True)
+        if found:
+            self._update_row.set_title(_("Update available: {version}").format(version=found[0]))
+            self._update_button.set_label(_("Release notes"))
+        else:
+            self._update_row.set_title(_("Installed version: {version}").format(version=core.__version__))
+            self._update_button.set_label(_("Check now"))
+            return
+        self._update_row.set_subtitle(_("Installed version: {version}").format(version=core.__version__))
+
+    def _update_clicked(self, button):
+        if self.update_found:
+            Gtk.UriLauncher(uri=self.update_found[1]).launch(self.get_active_window(), None, None)
+            return
+        button.set_sensitive(False)
+
+        def work():
+            try:
+                found, error = core.newer_release(), None
+            except (OSError, ValueError, KeyError) as e:
+                found, error = None, e
+            GLib.idle_add(self._update_checked, found, error)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _update_checked(self, found, error):
+        if error:
+            self._update_button.set_sensitive(True)
+            self.get_active_window().toast(_("Could not check for updates. Are you online?"))
+            return
+        self.update_found = found
+        self._show_update_state()
+        if not found:   # up to date: the row says so
+            self._update_row.set_title(_("NfoGlow is up to date."))
+            self._update_row.set_subtitle(_("Installed version: {version}").format(version=core.__version__))
 
     def _ramp_color(self, button, _p, i):
         c = button.get_rgba()

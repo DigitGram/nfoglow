@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: NfoGlow 1.0\n"
+"Project-Id-Version: NfoGlow 1.1\n"
 "Last-Translator: Claude (AI-generated, not reviewed by a native speaker)\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -777,3 +777,47 @@ msgstr "Jeszcze 1 kliknięcie …"
 #: src/ui_window.py
 msgid "Copy to clipboard"
 msgstr "Kopiuj do schowka"
+
+#: src/ui_settings.py
+msgid "Other"
+msgstr "Inne"
+
+#: src/ui_settings.py
+msgid "Updates"
+msgstr "Aktualizacje"
+
+#: src/ui_settings.py
+msgid "Check for updates weekly"
+msgstr "Sprawdzaj aktualizacje co tydzień"
+
+#: src/ui_settings.py
+msgid "Asks GitHub once a week for the newest version. Nothing is sent and nothing is installed."
+msgstr "Raz w tygodniu pyta GitHub o najnowszą wersję. Nic nie jest wysyłane i nic nie jest instalowane."
+
+#: src/ui_settings.py
+msgid "Installed version: {version}"
+msgstr "Zainstalowana wersja: {version}"
+
+#: src/ui_settings.py
+msgid "Check now"
+msgstr "Sprawdź teraz"
+
+#: src/ui_app.py
+msgid "Could not check for updates. Are you online?"
+msgstr "Nie udało się sprawdzić aktualizacji. Czy jesteś online?"
+
+#: src/ui_settings.py
+msgid "NfoGlow is up to date."
+msgstr "NfoGlow jest aktualny."
+
+#: src/ui_app.py
+msgid "NfoGlow {version} is available"
+msgstr "Dostępny jest NfoGlow {version}"
+
+#: src/ui_app.py
+msgid "Release notes"
+msgstr "Informacje o wydaniu"
+
+#: src/ui_settings.py
+msgid "Update available: {version}"
+msgstr "Dostępna aktualizacja: {version}"

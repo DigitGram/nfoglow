@@ -52,7 +52,15 @@ msgid "Stennish – chiptune {number} of {count}"
 msgstr ""
 
 #: src/ui_app.py
+msgid "Release notes"
+msgstr ""
+
+#: src/ui_app.py
 msgid "Keyboard shortcuts"
+msgstr ""
+
+#: src/ui_app.py
+msgid "NfoGlow {version} is available"
 msgstr ""
 
 #: src/ui_common.py
@@ -788,11 +796,47 @@ msgid "Back to the default values."
 msgstr ""
 
 #: src/ui_settings.py
+msgid "Other"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Updates"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Check for updates weekly"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Asks GitHub once a week for the newest version. Nothing is sent and nothing is installed."
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Check now"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Could not check for updates. Are you online?"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "NfoGlow is up to date."
+msgstr ""
+
+#: src/ui_settings.py
 msgid "None: the built-in chiptunes by Stennish"
 msgstr ""
 
 #: src/ui_settings.py
 msgid "System default"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Installed version: {version}"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Update available: {version}"
 msgstr ""
 
 #: src/ui_settings.py

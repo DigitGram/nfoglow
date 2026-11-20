@@ -677,7 +677,7 @@ def test_every_setting_is_either_part_of_the_look_or_listed_as_not():
     import ui_common
     not_look = {"zoom", "encoding", "language", "copy_text_only", "custom", "recent", "remember_recent",
                 "music", "music_dir", "music_shuffle", "volume", "music_fade", "music_info", "random_on_start",
-                "sidebar", "maximized", "scroller_text"}
+                "sidebar", "maximized", "scroller_text", "update_check", "update_last"}
     unknown = set(core.DEFAULTS) - set(ui_common.LOOK) - not_look
     assert not unknown, f"part of the look (LOOK and roll_look) or behaviour (this list)? {unknown}"
 
@@ -758,6 +758,40 @@ if __name__ == "__main__":
         if name.startswith("test_"):
             fn()
             print("ok", name)
+
+
+def test_update_check():
+    """Versions compare as numbers, a bad answer is refused, the weekly check is off by default and waits a week."""
+    import io
+    import json
+    import time
+    from contextlib import nullcontext
+    from unittest import mock
+    assert core.version_tuple("v1.10") > core.version_tuple("1.9") and core.version_tuple("1.2") == (1, 2)
+    assert core.version_tuple("latest") is None and core.version_tuple("1.2-beta") is None
+
+    def answer(tag, url="https://github.com/DigitGram/nfoglow/releases/tag/v9"):
+        return nullcontext(io.BytesIO(json.dumps({"tag_name": tag, "html_url": url}).encode()))
+    with mock.patch("urllib.request.urlopen", return_value=answer("v99.0")):
+        assert core.newer_release()[0] == "99.0"
+    with mock.patch("urllib.request.urlopen", return_value=answer("v" + core.__version__)):
+        assert core.newer_release() is None   # the same version is not news
+    for bad in (answer("nightly"), answer("v99", "https://evil.example/")):
+        with mock.patch("urllib.request.urlopen", return_value=bad):
+            try:
+                core.newer_release()
+            except ValueError:
+                continue
+            raise AssertionError("a strange answer was accepted")
+    cfg = dict(core.DEFAULTS)
+    assert not core.update_due(cfg)   # off by default
+    cfg["update_check"] = True
+    assert core.update_due(cfg)
+    cfg["update_last"] = int(time.time())
+    assert not core.update_due(cfg)
+    assert core.update_due(cfg, time.time() + core.UPDATE_INTERVAL + 1)
+    with mock.patch("os.path.exists", return_value=True):   # in a Flatpak the store updates
+        assert not core.update_due(cfg, time.time() + 10 * core.UPDATE_INTERVAL)
 
 
 def test_clean_text_keeps_letter_spaced_text():

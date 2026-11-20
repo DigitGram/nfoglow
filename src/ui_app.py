@@ -5,6 +5,8 @@ the recent files, the music and the about dialog. One App can have several windo
 import copy
 import os
 import random
+import threading
+import time
 
 import gi
 gi.require_version("Gtk", "4.0")
@@ -38,6 +40,7 @@ class App(SettingsDialog, Adw.Application):
         self.saved_look = None          # while a rolled look is shown: the look in the settings, to keep on disk
         self.looks_before = []          # for Undo: the look before each change by hand (a style click is one change)
         self._undoing = False
+        self.update_found = None        # (version, page) of a newer release, once one was found
 
     def do_startup(self):
         Adw.Application.do_startup(self)
@@ -144,9 +147,37 @@ class App(SettingsDialog, Adw.Application):
         """Loudness 0..1 of the music, or None when none plays (the pulse then breathes on its own)."""
         return self.player.level() if self.player and self.player.playing else None
 
+    def weekly_update_check(self):
+        """At the first window, if the user switched the weekly check on and it is due: look in the background, say so only when
+        there is news. The date is saved whatever the answer, so an offline start does not retry on every launch."""
+        if getattr(self, "_update_checked_once", False) or not core.update_due(self.cfg):
+            return
+        self._update_checked_once = True
+        self.change("update_last", int(time.time()))
+
+        def work():
+            try:
+                found = core.newer_release()
+            except (OSError, ValueError, KeyError):
+                return
+            if found:
+                GLib.idle_add(self._update_found, found)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _update_found(self, found):
+        """A toast that stays until dismissed, with a button to the release page."""
+        self.update_found = found
+        window = self.get_active_window()
+        if isinstance(window, Window):
+            toast = Adw.Toast(use_markup=False, title=_("NfoGlow {version} is available").format(version=found[0]),
+                              button_label=_("Release notes"), timeout=0)
+            toast.connect("button-clicked", lambda t: Gtk.UriLauncher(uri=found[1]).launch(window, None, None))
+            window.toasts.add_toast(toast)
+
     def do_activate(self):
         (self.get_active_window() or Window(self)).present()
         GLib.idle_add(self._show_announced)
+        self.weekly_update_check()
 
     def do_open(self, files, n, hint):
         for f in files:
@@ -156,6 +187,7 @@ class App(SettingsDialog, Adw.Application):
             w.load(f.get_path())
             w.present()
         GLib.idle_add(self._show_announced)
+        self.weekly_update_check()
 
     def open_path(self, path):
         """From the recent list: into the active window."""
