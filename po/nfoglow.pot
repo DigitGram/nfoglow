@@ -872,10 +872,6 @@ msgid "Off"
 msgstr ""
 
 #: src/ui_sidebar.py
-msgid "Sound"
-msgstr ""
-
-#: src/ui_sidebar.py
 msgid "Effects and sound"
 msgstr ""
 
