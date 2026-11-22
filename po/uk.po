@@ -336,9 +336,6 @@ msgstr "Неонове сяйво пульсує в такт музиці або
 msgid "Art"
 msgstr "Графіка"
 
-msgid "Sound"
-msgstr "Звук"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "Лише текст, без графіки (Ctrl+T)"
 

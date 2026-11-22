@@ -336,9 +336,6 @@ msgstr "O brilho neon pulsa no ritmo da música, ou respira sem ela"
 msgid "Art"
 msgstr "Arte"
 
-msgid "Sound"
-msgstr "Som"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "Somente o texto, sem os gráficos (Ctrl+T)"
 

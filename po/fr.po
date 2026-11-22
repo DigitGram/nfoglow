@@ -336,9 +336,6 @@ msgstr "La lueur néon pulse au rythme de la musique, ou respire sans elle"
 msgid "Art"
 msgstr "Art"
 
-msgid "Sound"
-msgstr "Son"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "Texte seul, sans les graphismes (Ctrl+T)"
 

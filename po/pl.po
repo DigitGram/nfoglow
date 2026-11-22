@@ -336,9 +336,6 @@ msgstr "Neonowa poświata pulsuje w rytm muzyki albo „oddycha” bez niej"
 msgid "Art"
 msgstr "Grafika"
 
-msgid "Sound"
-msgstr "Dźwięk"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "Tylko tekst, bez grafiki (Ctrl+T)"
 

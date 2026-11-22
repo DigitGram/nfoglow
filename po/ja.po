@@ -336,9 +336,6 @@ msgstr "ネオンの光が音楽に合わせて脈打ち、音楽がないとき
 msgid "Art"
 msgstr "アート"
 
-msgid "Sound"
-msgstr "サウンド"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "グラフィックなしのテキストのみ (Ctrl+T)"
 

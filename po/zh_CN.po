@@ -336,9 +336,6 @@ msgstr "霓虹光晕随音乐节拍律动；无音乐时则缓慢起伏"
 msgid "Art"
 msgstr "图形"
 
-msgid "Sound"
-msgstr "声音"
-
 msgid "Only the text, without the graphics (Ctrl+T)"
 msgstr "仅文本，不含图形 (Ctrl+T)"
 
