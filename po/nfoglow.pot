@@ -168,6 +168,10 @@ msgid "Aperture grille"
 msgstr ""
 
 #: src/ui_common.py
+msgid "Slight"
+msgstr ""
+
+#: src/ui_common.py
 msgid "Few"
 msgstr ""
 
@@ -565,6 +569,22 @@ msgstr ""
 
 #: src/ui_settings.py
 msgid "Colors"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr ""
+
+#: src/ui_settings.py
+msgid "Smoothing"
 msgstr ""
 
 #: src/ui_settings.py

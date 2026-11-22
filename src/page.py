@@ -50,6 +50,7 @@ DOS_FONT_READY = _add_dos_font()
 # web and e-mail; the lookbehind starts an address only at the start of a word, else a long line takes minutes
 LINK_RE = re.compile(r"(?:https?://|www\.)[^\s<>\"']+|(?<![\w.+-])[\w.+-]+@[\w-]+(?:\.[\w-]+)+", re.I)   # old NFOs shout: WWW.GROUP.COM
 WOBBLE = {"low": .15, "mid": .3, "high": .45}   # how far the logo sways, in character heights (more is no logo)
+SMOOTH = {"low": (3, 0), "mid": (3, 3), "high": (3, 10)}   # (Scale2x steps, blur passes): how smooth the edges get
 MAX_IMAGE = 32767              # cairo cannot make an image wider or higher than this
 
 
@@ -214,15 +215,141 @@ class Page:
         if not w or not h or w * h * scale * scale > 24e6 or max(w, h) * scale > MAX_IMAGE:   # 24e6: about 100 MB
             return None
         color = (1.0, 1.0, 1.0) if white else art
-        key = ("layer", self.zoom, scale, color, None if white else ramp and tuple(ramp))
+        smooth = SMOOTH.get(self.cfg.get("smooth_amount", "mid"), SMOOTH["mid"]) if self.cfg.get("smooth") and not self.colors \
+            and not self.plain else 0
+        key = ("layer", self.zoom, scale, color, None if white else ramp and tuple(ramp), smooth)
         if self._fx.get("layer-key") != key:   # only the current one: a new colour replaces the old image
             layer = cairo.ImageSurface(cairo.FORMAT_ARGB32, math.ceil(w * scale), math.ceil(h * scale))
             layer.set_device_scale(scale, scale)
             lc = cairo.Context(layer)
             lc.set_antialias(cairo.ANTIALIAS_NONE)
-            self._draw_blocks(lc, 0, 0, color, 0, len(self.rows), None if white else ramp)
+            if smooth:
+                self._smooth_blocks(lc, layer, scale, color, None if white else ramp, smooth)
+            else:
+                self._draw_blocks(lc, 0, 0, color, 0, len(self.rows), None if white else ramp)
             self._fx["layer-key"], self._fx["layer"] = key, layer
         return self._fx["layer"]
+
+    def _art_pixels(self):
+        """The blocks of the art (shades too) as pixel art, a list of rows of 0 and 1 bytes, cached with the page: a pixel is
+        half a cell high and a cell wide, or half a cell wide when some block (▌ ▐ ▖ ...) needs it. Returns
+        (rows, pixels per cell across)."""
+        if "art-pixels" not in self._fx:
+            wide = any(x % 1 for row in self.rows for _c, rects, _a in row[2] for rect in rects for x in rect[::2])
+            gx, h = 2 if wide else 1, len(self.rows) * 2
+            grid = [bytearray(self.cols * gx) for _ in range(h)]
+            for r, row in enumerate(self.rows):
+                for c, rects, _alpha in row[2]:
+                    for x0, y0, x1, y1 in rects:
+                        for y in range(round((2 * r) + 2 * y0), round(2 * r + 2 * y1)):   # a thin ▁ is a whole pixel row
+                            xa = round((c + x0) * gx)
+                            grid[y][xa:max(xa + 1, round((c + x1) * gx))] = b"\1" * max(1, round((c + x1) * gx) - xa)
+            self._fx["art-pixels"] = (grid, gx)
+        return self._fx["art-pixels"]
+
+    def _smooth_blocks(self, lc, layer, scale, color, ramp, amount):
+        """The block graphics with smooth edges, for those who hate pixels. The art is read as the pixel art it is
+        and enlarged by Scale2x (EPX) as often as the amount says: every step of a staircase between two pixels becomes a
+        diagonal, round shapes become round. The enlarged pixels are then scaled to the screen smoothly (bilinear)
+        and cut off at half again, with an edge of one or two device pixels of anti-aliasing. Shades (░▒▓) belong to
+        the outline and fade softly into the whole blocks inside it. Only cairo and bytes, no extra library."""
+        pw, ph = layer.get_width(), layer.get_height()
+        grid, gx = self._art_pixels()
+        steps, passes = amount
+        steps = min(steps, max(0, int(math.log2(max(1.0, 16e6 / max(1, len(grid) * len(grid[0])))) / 2)))   # a big page: fewer
+        for _ in range(steps):
+            grid = _scale2x(grid)
+        n = 2 ** steps
+        gw, gh = len(grid[0]), len(grid)
+        full = cairo.ImageSurface(cairo.FORMAT_A8, gw, gh)   # alpha only: a quarter of the bytes to push around
+        stride = full.get_stride()
+        full.get_data()[:] = b"".join(bytes(r) + bytes(stride - gw) for r in grid).translate(bytes([0, 255]) + bytes(254))
+        full.mark_dirty()
+        # halved (each pixel the average of 2 x 2): the finest steps of Scale2x become anti-aliasing, the blur
+        # below costs a quarter
+        small = cairo.ImageSurface(cairo.FORMAT_A8, (gw + 1) // 2, (gh + 1) // 2)
+        hc = cairo.Context(small)
+        hc.scale(.5, .5)
+        hc.set_source_surface(full, 0, 0)
+        hc.get_source().set_filter(cairo.FILTER_BILINEAR)
+        hc.paint()
+        for _ in range(passes):   # a little blur closes the thin necks of a diagonal: [1 2 1] / 4 across and down,
+            for dx, dy in ((.5, 0), (0, .5)):   # as two bilinear copies half a sample off
+                nxt = cairo.ImageSurface(cairo.FORMAT_A8, small.get_width(), small.get_height())
+                nc = cairo.Context(nxt)
+                nc.set_operator(cairo.OPERATOR_ADD)
+                for sign in (1, -1):
+                    sp = cairo.SurfacePattern(small)
+                    sp.set_filter(cairo.FILTER_BILINEAR)
+                    sp.set_extend(cairo.EXTEND_PAD)
+                    sp.set_matrix(cairo.Matrix(x0=-sign * dx, y0=-sign * dy))
+                    nc.set_source(sp)
+                    nc.paint_with_alpha(.5)
+                small = nxt
+        sx, sy = self.cw * scale / gx / n * 2, self.ch * scale / 2 / n * 2   # device pixels per sample
+        blur = cairo.ImageSurface(cairo.FORMAT_A8, pw, ph)   # to the screen's pixels, bilinear
+        bc = cairo.Context(blur)
+        bc.scale(sx, sy)
+        sp = cairo.SurfacePattern(small)
+        sp.set_filter(cairo.FILTER_BILINEAR)
+        sp.set_extend(cairo.EXTEND_PAD)
+        bc.set_source(sp)
+        bc.paint()
+        blur.flush()
+        # the cut: an edge blurred by sigma rises by about .4 / sigma per device pixel; steepened to ramp over about
+        # 1.4 pixels (sigma in samples: the halving, the passes and the bilinear scaling, roughly)
+        gain = max(1.0, 1.8 * max(sx, sy) * math.sqrt(.5 * passes + .3))
+        table = bytes(max(0, min(255, round(((i / 255 - .5) * gain + .5) * 255))) for i in range(256))
+        data = blur.get_data()
+        data[:] = bytes(data).translate(table)
+        blur.mark_dirty()
+        shades = self._shade_pixels(gx)
+        if shades is not None:   # the shades (░▒▓) are part of the outline, and inside it they fade softly
+            bc = cairo.Context(blur)   # into the whole blocks
+            bc.scale(self.cw * scale / gx, self.ch * scale / 2)
+            sp = cairo.SurfacePattern(shades)
+            sp.set_filter(cairo.FILTER_BILINEAR)
+            sp.set_extend(cairo.EXTEND_PAD)
+            bc.set_source(sp)
+            bc.set_operator(cairo.OPERATOR_IN)
+            bc.paint()
+        shape = blur
+        lc.save()
+        lc.scale(1 / scale, 1 / scale)   # the pixels of the image
+        outline = cairo.SurfacePattern(shape)
+        if ramp:   # each group of art rows its own gradient, a row more than the blocks for the rounded edge
+            for top, end in set(self.group.values()):
+                grad = cairo.LinearGradient(0, self.ch * top * scale, 0, self.ch * end * scale)
+                for i, c in enumerate(ramp):
+                    grad.add_color_stop_rgb(i / max(len(ramp) - 1, 1), *c)
+                lc.save()
+                lc.rectangle(0, (top - 1) * self.ch * scale, pw, (end - top + 2) * self.ch * scale)
+                lc.clip()
+                lc.set_source(grad)
+                lc.mask(outline)
+                lc.restore()
+        else:
+            lc.set_source_rgb(*color)
+            lc.mask(outline)
+        lc.restore()
+
+    def _shade_pixels(self, gx):
+        """How strong each pixel of the art is (see _art_pixels): 1, and the alpha of a shade (░▒▓) on its cells;
+        None when there are no shades."""
+        cells = [(r, c, rects, alpha) for r, row in enumerate(self.rows) for c, rects, alpha in row[2] if alpha < 1]
+        if not cells:
+            return None
+        img = cairo.ImageSurface(cairo.FORMAT_A8, self.cols * gx, len(self.rows) * 2)
+        cr = cairo.Context(img)
+        cr.paint()
+        cr.set_operator(cairo.OPERATOR_SOURCE)
+        cr.scale(gx, 2)
+        for r, c, rects, alpha in cells:
+            for x0, y0, x1, y1 in rects:
+                cr.rectangle(c + x0, r + y0, x1 - x0, y1 - y0)
+            cr.set_source_rgba(0, 0, 0, alpha)
+            cr.fill()
+        return img
 
     def _paint_blurred(self, cr, x0, y0, art, ramp, k, alpha=1.0, pattern=None):
         """The blocks rendered at 1/k size and scaled back up bilinearly: soft edges, or with a big k a halo.
@@ -611,6 +738,37 @@ class Page:
         s = cairo.ImageSurface(cairo.FORMAT_RGB24, max(self.width, 1), max(self.height, 1))
         self.paint(cairo.Context(s))
         return s
+
+
+def _scale2x(g):
+    """Scale2x (EPX) of a picture of 0 and 1 bytes: every pixel becomes four, and where two neighbours at a corner
+    agree and the other two do not, the corner takes their value: a one-pixel staircase turns into a diagonal.
+    A whole row at a time as one big number (each byte 0 or 1, so the bit operations work byte by byte)."""
+    h, w = len(g), len(g[0])
+    big = lambda b: int.from_bytes(b, "big")
+    one, zero = big(b"\1" * w), bytes(w)
+    rows = [big(r) for r in g]
+    out = []
+    for y in range(h):
+        p, a, d = rows[y], rows[y - 1] if y else 0, rows[y + 1] if y + 1 < h else 0
+        if not (p or a or d):
+            out.extend((bytearray(2 * w), bytearray(2 * w)))
+            continue
+        row = g[y]
+        b, c = big(row[1:] + b"\0"), big(b"\0" + row[:-1])   # the right and the left neighbour
+
+        def eq(x, z):
+            return one ^ x ^ z
+        tl = p ^ ((a ^ p) & eq(c, a) & (c ^ d) & (a ^ b))
+        tr = p ^ ((b ^ p) & eq(a, b) & (a ^ c) & (b ^ d))
+        bl = p ^ ((c ^ p) & eq(d, c) & (d ^ b) & (c ^ a))
+        br = p ^ ((d ^ p) & eq(b, d) & (b ^ a) & (d ^ c))
+        for left, right in ((tl, tr), (bl, br)):
+            line = bytearray(2 * w)
+            line[0::2] = left.to_bytes(w, "big") if left else zero
+            line[1::2] = right.to_bytes(w, "big") if right else zero
+            out.append(line)
+    return out
 
 
 def _pixel_scale(cr):

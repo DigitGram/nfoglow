@@ -710,10 +710,30 @@ def test_the_dos_font_is_bundled_and_has_the_vga_cell():
 def test_every_style_sets_every_effect():
     """A style must set each on/off effect, or switching from one style to another leaves effects of the first on."""
     import ui_common
-    effects = {k for k in ui_common.LOOK if isinstance(core.DEFAULTS[k], bool)}
+    # the styles leave the smooth edges alone, like the theme and the font: pixels or not is a taste of its own
+    effects = {k for k in ui_common.LOOK if isinstance(core.DEFAULTS[k], bool)} - {"smooth"}
     for name, (_label, settings) in ui_common.STYLES.items():
         assert effects <= set(settings), (name, effects - set(settings))
         assert not (settings.get("pulse") and settings.get("neon_flicker")), (name, "pulse and flicker beat the same glow")
+
+
+def test_smooth_edges_round_a_staircase_and_leave_the_rest():
+    """Smoothing anti-aliases the steps of the block art (partly covered pixels appear), keeps the art in place, and
+    touches neither ANSI art nor the text-only view."""
+    art = "\n".join(["▄█", "██▀", "█▀"])
+
+    def render(cfg, plain=False):
+        page = pages.Page({**CFG, "soft": False, "ramp": False, **cfg}, 1.0)
+        page.set_text(art)
+        page.plain = plain
+        return page.render()
+    colours = lambda s: {bytes(s.get_data())[i:i + 3] for i in range(0, len(bytes(s.get_data())), 4)}
+    sharp = render({})
+    for amount in ("low", "mid", "high"):
+        smooth = render({"smooth": True, "smooth_amount": amount})
+        assert bytes(smooth.get_data()) != bytes(sharp.get_data()), amount
+        assert len(colours(smooth)) > len(colours(sharp)), amount   # in-between colours: anti-aliased edges
+    assert bytes(render({"smooth": True}, plain=True).get_data()) == bytes(render({}, plain=True).get_data())
 
 
 def test_the_text_only_view_shows_no_effect():

@@ -821,3 +821,23 @@ msgstr "リリースノート"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "アップデートがあります: {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "エッジ"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "エッジを滑らかに"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "ブロックアートのピクセルの階段を丸め、アンチエイリアスをかけます"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "滑らかさ"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "弱"

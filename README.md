@@ -51,6 +51,7 @@ NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the 
 ## What you get
 
 - **Clean art.** Block graphics as exact pixels, without seams.
+- **Smooth edges, for the pixel haters.** If you cannot stand a staircase: one switch turns the steps of the block art into straight diagonals and round curves, anti-aliased, and lets the ░▒▓ shading fade softly. Off by default, because some of us like our pixels.
 - **Effects (F9).** Neon glow, phosphor glow, colour ramps, scanlines, shadow mask, a live CRT and the IBM VGA font. The sidebar moves the NFO aside instead of covering it.
 - **Styles.** Classic, Soft, Neon, Tube, Retrowave and Demoscene set everything with one click; every effect can still be tuned on its own.
 - **Demoscene mode.** Colour cycling, wobbling logo, stars, sine scroller, sparkles and a glow that pulses to the music, plus one of eight opening effects (modem build-up, C64 loader, DOS boot, CRT power-on, code rain and more). Off by default.

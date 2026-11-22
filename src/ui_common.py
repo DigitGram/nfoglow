@@ -19,11 +19,11 @@ GLOW_MODES = {"soft": N_("Soft edges"), "halo": N_("Neon")}
 CUSTOM_COLORS = {"bg": N_("Background"), "text": N_("Text"), "art": N_("Block graphics"), "link": N_("Links")}
 ENCODINGS = {"auto": N_("Automatic"), "cp437": "CP437 (DOS)", "cp850": "CP850", "latin-1": "Latin-1", "utf-8": "UTF-8"}
 BOOL_ACTIONS = ("ramp", "crt", "crt_live", "cycle", "pulse", "music", "stars", "scroller",
-                "wobble", "text_glow", "neon_flicker", "sheen", "sparkle", "chroma")
+                "wobble", "text_glow", "neon_flicker", "sheen", "sparkle", "chroma", "smooth")
 # the effects that move: switched on, they need the frame clock (the window test checks that they get it)
 ANIMATIONS = ("cycle", "pulse", "stars", "scroller", "wobble", "wobble_amount", "stars_mode",
               "neon_flicker", "sheen", "sparkle", "crt_live")
-# styles: a few looks that set all the effects at once; the theme is left alone. Its button lights up while
+# styles: a few looks that set all the effects at once; the theme and the smooth edges are left alone. Its button lights up while
 # every effect matches it.
 STYLES = {
     "classic": (N_("Classic"), {"soft": False, "ramp": False, "cycle": False, "pulse": False,
@@ -55,7 +55,8 @@ CRT_MASKS = {"lines": N_("Scanlines"), "dots": N_("Shadow mask"), "stripes": N_(
 SUB_SETTINGS = {"ramp": ("ramp_colors",), "cycle": ("cycle_palette", "cycle_dir"), "wobble": ("wobble_amount",),
                 "stars": ("stars_mode",), "scroller": ("scroller_text",), "sparkle": ("sparkle_amount",),
                 "crt": ("crt_mask", "crt_live"), "music": ("music_dir", "music_shuffle", "volume", "music_info", "music_fade"),
-                "pulse": ("pulse_mode",)}
+                "pulse": ("pulse_mode",), "smooth": ("smooth_amount",)}
+SMOOTH_AMOUNTS = {"low": N_("Slight"), "mid": N_("Medium"), "high": N_("Strong")}
 SPARKLE_AMOUNTS = {"few": N_("Few"), "some": N_("Some"), "many": N_("Many")}
 STARS_MODES = {"drift": N_("Drifting"), "warp": N_("Warp flight")}
 OPENINGS = {"off": N_("None"), "modem": N_("Modem build-up"), "glitch": N_("Glitch"), "loader": N_("Tape loader"),
@@ -76,14 +77,16 @@ MUSIC_ORDER = {True: N_("Random"), False: N_("In order")}
 # what the dice change: the look, never the behaviour (encoding, language, music, ...)
 LOOK = ("theme", "soft", "glow_mode", "glow", "ramp", "ramp_colors", "cycle", "cycle_palette", "pulse",
         "crt", "crt_live", "stars", "stars_mode", "scroller", "wobble", "wobble_amount", "text_glow",
-        "neon_flicker", "cycle_dir", "pulse_mode", "opening", "sheen", "sparkle", "sparkle_amount", "chroma", "crt_mask", "font")
+        "neon_flicker", "cycle_dir", "pulse_mode", "opening", "sheen", "sparkle", "sparkle_amount", "chroma", "crt_mask", "smooth",
+        "smooth_amount", "font")
 # what a look code carries: the font is left out (any font name would come from outside); the code tells only whether
 # the bundled DOS font is on
 LOOK_SHARED = tuple(k for k in LOOK if k != "font")
 # the settings of a look that are picked from a list (a look code is checked against these)
 LOOK_CHOICES = {"theme": THEME_NAMES, "glow_mode": GLOW_MODES, "cycle_palette": CYCLE_PALETTES,
                 "wobble_amount": WOBBLE_AMOUNTS, "stars_mode": STARS_MODES, "cycle_dir": CYCLE_DIRECTIONS,
-                "pulse_mode": PULSE_MODES, "opening": OPENINGS, "sparkle_amount": SPARKLE_AMOUNTS, "crt_mask": CRT_MASKS}
+                "pulse_mode": PULSE_MODES, "opening": OPENINGS, "sparkle_amount": SPARKLE_AMOUNTS, "crt_mask": CRT_MASKS,
+                "smooth_amount": SMOOTH_AMOUNTS}
 # the colour ramp that comes with each theme (top, middle, bottom of a block of art); Custom keeps your own
 THEME_RAMPS = {"light": ("#1046a0", "#5b2bb5", "#b5179e"), "bw": ("#000000", "#3d3d3d", "#808080"),   # black to grey
                "dark": ("#73f0ff", "#4d8cff", "#d94dff"),

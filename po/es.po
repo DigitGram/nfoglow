@@ -821,3 +821,23 @@ msgstr "Novedades"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "Actualización disponible: {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "Bordes"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "Bordes suavizados"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "Redondea los escalones de píxeles del arte en bloques, con antialiasing"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "Suavizado"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "Leve"

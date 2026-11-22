@@ -821,3 +821,23 @@ msgstr "发行说明"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "有可用更新:{version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "边缘"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "平滑边缘"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "圆滑方块图形的像素台阶，并进行抗锯齿"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "平滑程度"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "轻微"

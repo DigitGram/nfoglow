@@ -821,3 +821,23 @@ msgstr "Notes de version"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "Mise à jour disponible : {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "Bords"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "Bords lissés"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "Arrondit les marches de pixels des graphiques en blocs, avec anticrénelage"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "Lissage"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "Léger"

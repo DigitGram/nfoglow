@@ -993,3 +993,23 @@ msgstr "Neuerungen"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "Update verfügbar: {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "Kanten"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "Kantenglättung"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "Rundet die Pixelstufen der Blockgrafik ab, mit Kantenglättung"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "Glättung"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "Gering"

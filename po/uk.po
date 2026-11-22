@@ -821,3 +821,23 @@ msgstr "Примітки до випуску"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "Доступне оновлення: {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "Краї"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "Згладжування країв"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "Заокруглює піксельні сходинки блокової графіки зі згладжуванням"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "Згладжування"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "Слабке"

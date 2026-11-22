@@ -397,6 +397,7 @@ class App(SettingsDialog, Adw.Application):
                 "opening": "off" if r.random() < .5 else r.choice([k for k in OPENINGS if k != "off"]),
                 "sheen": r.random() < .2, "sparkle": r.random() < .2, "sparkle_amount": r.choice(("few", "some", "many")), "chroma": crt and r.random() < .5,
                 "crt_mask": r.choice(("lines", "lines", "dots", "stripes")),
+                "smooth": r.random() < 1 / 6, "smooth_amount": r.choice(("low", "mid", "high")),   # rarely: some love their pixels
                 # the VGA font now and then; a font of your own stays unless the VGA font is on
                 "font": core.DOS_FONT if r.random() < .25 else core.FONT if self.cfg["font"] == core.DOS_FONT else self.cfg["font"]}
         look["neon_flicker"] = style == "halo" and not look["pulse"] and r.random() < .25   # both beat the same glow

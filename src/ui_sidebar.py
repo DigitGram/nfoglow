@@ -164,6 +164,8 @@ class EffectsSidebar:
                 styles, strength, switch("app.ramp", N_("Color ramp")), switch("app.text-glow", N_("Text glow")),
                 switch("app.neon-flicker", N_("Flicker"), N_("Flickers now and then, like an old sign; needs Neon")),
                 switch("app.pulse", N_("Pulse"), N_("Neon glow to the beat; needs Neon")))
+        section(N_("Edges"), "applications-graphics-symbolic", list,
+                switch("app.smooth", N_("Smooth edges"), N_("Rounds the pixel steps of the block art, with anti-aliasing")))
         section(N_("Animation"), "media-playback-start-symbolic", list,
                 switch("app.cycle", N_("Color cycling")),
                 switch("app.wobble", N_("Wobble")),

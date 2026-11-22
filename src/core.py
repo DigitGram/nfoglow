@@ -41,7 +41,7 @@ DEFAULTS = {"theme": "light", "font": FONT, "zoom": 100, "soft": True, "glow": 3
             "wobble": False, "wobble_amount": "mid", "stars_mode": "drift", "music_info": True,
             "maximized": False, "pulse_mode": "beat", "opening": "off", "text_glow": False,
             "neon_flicker": False, "sheen": False, "sparkle": False, "sparkle_amount": "some", "chroma": False,
-            "crt_mask": "lines",
+            "crt_mask": "lines", "smooth": False, "smooth_amount": "mid",
             "update_check": False, "update_last": 0}   # weekly check at start: off until the user switches it on
 
 

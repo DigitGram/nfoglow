@@ -14,7 +14,7 @@ import i18n  # noqa: E402
 import music  # noqa: E402
 from i18n import N_, _  # noqa: E402
 from ui_common import (SUB_SETTINGS, CRT_MASKS, CUSTOM_COLORS, CYCLE_DIRECTIONS, CYCLE_PALETTES, ENCODINGS, GLOW_MODES,  # noqa: E402
-                       MUSIC_ORDER, PULSE_MODES, SPARKLE_AMOUNTS, STARS_MODES, THEME_NAMES, THEME_RAMPS, WOBBLE_AMOUNTS, opening_row,
+                       MUSIC_ORDER, PULSE_MODES, SMOOTH_AMOUNTS, SPARKLE_AMOUNTS, STARS_MODES, THEME_NAMES, THEME_RAMPS, WOBBLE_AMOUNTS, opening_row,
                        slider)
 
 
@@ -26,11 +26,11 @@ class SettingsDialog:
         view and light up briefly (the gear beside a switch in the effects sidebar)."""
         self._rows = {}
         d = Adw.PreferencesDialog(title=_("Preferences"))   # else libadwaita titles it in the system language
-        surprise, glow, colors, motion, logo, scroll, opening, retro = self._effects()
+        surprise, glow, colors, motion, logo, scroll, opening, retro, edges = self._effects()
         behave, reset = self._behavior(d)
         # General first (the dialog opens there): behavior, look, and the reset at the very end
         for title, icon, groups in ((_("General"), "preferences-system-symbolic", (behave, *self._appearance(), *self._updates(), reset)),
-                                    (_("Effects"), "preferences-color-symbolic", (surprise, glow, colors, retro)),
+                                    (_("Effects"), "preferences-color-symbolic", (surprise, glow, colors, edges, retro)),
                                     (_("Animation"), "media-playback-start-symbolic", (motion, logo, scroll, opening)),
                                     (_("Music"), "audio-x-generic-symbolic", (self._music(),))):
             page = Adw.PreferencesPage(title=title, icon_name=icon)
@@ -148,6 +148,9 @@ class SettingsDialog:
         ramp.add_row(back)
         colors_group = Adw.PreferencesGroup(title=_("Colors"))
         colors_group.add(ramp)
+        edges = Adw.PreferencesGroup(title=_("Edges"))
+        edges.add(self._switch(_("Smooth edges"), _("Rounds the pixel steps of the block art, with anti-aliasing"), "smooth"))
+        edges.add(self._combo(_("Smoothing"), SMOOTH_AMOUNTS, "smooth_amount"))
         retro = Adw.PreferencesGroup(title=_("Retro"))
         retro.add(self._switch(_("CRT screen"), _("Scanlines and dark corners, like an old monitor"),
                                "crt"))
@@ -186,7 +189,7 @@ class SettingsDialog:
         opening = Adw.PreferencesGroup(title=_("On opening"))
         self._rows["opening"] = opening_row(cfg, self.change, self._replay_opening)
         opening.add(self._rows["opening"])
-        return surprise, glow, colors_group, motion, logo, scroll, opening, retro
+        return surprise, glow, colors_group, motion, logo, scroll, opening, retro, edges
 
     def _music(self):
         """Music on or off, the folder, the order, the volume and the fade-in."""

@@ -821,3 +821,23 @@ msgstr "Informacje o wydaniu"
 #: src/ui_settings.py
 msgid "Update available: {version}"
 msgstr "Dostępna aktualizacja: {version}"
+
+#: src/ui_settings.py
+msgid "Edges"
+msgstr "Krawędzie"
+
+#: src/ui_settings.py
+msgid "Smooth edges"
+msgstr "Wygładzanie krawędzi"
+
+#: src/ui_settings.py
+msgid "Rounds the pixel steps of the block art, with anti-aliasing"
+msgstr "Zaokrągla schodki pikseli w grafice blokowej, z antyaliasingiem"
+
+#: src/ui_settings.py
+msgid "Smoothing"
+msgstr "Wygładzanie"
+
+#: src/ui_common.py
+msgid "Slight"
+msgstr "Słabe"
