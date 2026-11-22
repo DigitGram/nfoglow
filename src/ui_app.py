@@ -412,7 +412,11 @@ class App(SettingsDialog, Adw.Application):
 
     def apply_look(self, look):
         """A look from a shared code: all of it is one step on the Undo list (see _remember_look). The Custom
-        colours come first, the theme before the ramp, so that a ramp in the code wins over the theme's own."""
+        colours come first, the theme before the ramp, so that a ramp in the code wins over the theme's own.
+        Like a rolled look it is on trial until kept (the Keep card), whether or not the sidebar is open."""
+        self._remember_look()
+        if self.saved_look is None:
+            self.saved_look = {k: self.cfg[k] for k in LOOK}
         if "custom" in look:
             self.change("custom", look["custom"])
         if look.get("dos_font") is not None and look["dos_font"] != (self.cfg["font"] == core.DOS_FONT):

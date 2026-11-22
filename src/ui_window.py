@@ -626,6 +626,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         look = core.read_look_code(text or "", LOOK_SHARED, LOOK_CHOICES)
         if look:
             self.app.apply_look(look)
+            self.split.set_show_sidebar(True)   # the Keep card lives there
         self.toast(_("Look applied (Ctrl+Z undoes it)") if look else _("The clipboard holds no NfoGlow look code"), 2)
 
     def select_all(self, *a):
