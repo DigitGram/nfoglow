@@ -29,6 +29,8 @@
 
 Inspired by the Windows classic [iNFekt](https://github.com/syndicodefront/infekt).
 
+NfoGlow is also available for Windows 10 and 11: [NfoGlow for Windows](https://github.com/DigitGram/nfoglow-windows), the official port in Rust, with the same effects and look codes.
+
 Most text viewers draw the block characters `█ ▀ ▄ ░ ▒ ▓` with a font, which leaves gaps and seams in the art.
 NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the text crisp.
 
