@@ -3,6 +3,7 @@
 """Background music: the built-in chiptunes by Stennish (CC BY 4.0, see data/music/README.md), or the tracks of a
 folder (MOD/XM/S3M/IT like the old C64 and Amiga demos, or OGG/MP3/FLAC/WAV). Played with GStreamer, which comes with every
 GNOME desktop."""
+import json
 import math
 import os
 import random
@@ -22,6 +23,7 @@ Gst = None   # the module, imported by the first Player
 AUDIO = (".mod", ".xm", ".s3m", ".it", ".mptm", ".ogg", ".oga", ".opus", ".mp3", ".flac", ".wav", ".m4a")
 HERE = Path(__file__).resolve().parent
 BUILTIN = next((str(d) for d in (HERE / "music", HERE.parent / "data" / "music") if d.is_dir()), "")  # installed / checkout
+BEATS = Path(BUILTIN, "beats.json") if BUILTIN else None   # beat grid of the built-in tracks, see tools/analyze_beats.py
 INTRO, LOOP_END, LOOPS = 8.0, 48.0, 2   # built-in tracks: intro 0-8 s, loop 8-48 s; the loop plays twice per track
 FADE_IN, FADE_END, FADE_OFF = 3.0, 3.0, 1.5   # seconds: start of the music, end of each track, switching it off
 
@@ -67,6 +69,37 @@ class Beat:
         return self.value
 
 
+class Grid:
+    """The pulse of a built-in track, from its measured beat grid (tools/analyze_beats.py).
+
+    The built-in tracks run at 120 bpm and are so dense that loudness hardly shows the beat. So the pulse does not
+    listen: it follows the grid of eighth notes of the track. A beat (every second eighth) flashes fully, the eighth
+    in between a little, each by the accent measured for that position of the bar; then it fades until the next."""
+
+    STEP = .25            # seconds per eighth note
+    RELEASE = .18         # seconds for the pulse to fall to a third
+    OFF = .35             # strength of the eighth between two beats
+    LEAD = 0.0            # seconds the flash is shown earlier (positive) or later (negative) than the grid says
+
+    def __init__(self, info):
+        self.phase, self.accents = info["phase"], info["accents"]
+
+    def at(self, t):
+        """The pulse 0..1 at stream time t (seconds in the file)."""
+        u = (t - self.phase + self.LEAD) / self.STEP
+        k = math.floor(u)
+        hit = (1.0 if k % 2 == 0 else self.OFF) * (.5 + .5 * self.accents[k % len(self.accents)])
+        return hit * math.exp(-(u - k) * self.STEP / self.RELEASE)
+
+
+def grids():
+    """{file name: Grid} of the built-in tracks (empty when the data is missing)."""
+    try:
+        return {n: Grid(i) for n, i in json.loads(BEATS.read_text())["tracks"].items()}
+    except (OSError, ValueError, KeyError, AttributeError):
+        return {}
+
+
 class Player:
     """One playbin for the whole app. level(): the beat of what is heard now, 0..1, for the pulsing glow (see Beat).
 
@@ -101,16 +134,19 @@ class Player:
         self._current = None
         self.builtin, self._seek_pending, self._loops_left, self._level_value, self._errors = False, False, 0, 0.0, 0
         self.fade, self._in, self._off, self._ticking = False, 1.0, None, False
-        self._levels = deque(maxlen=200)   # (running time when it is heard, loudness in dB), see _level
+        self._levels = deque(maxlen=200)   # (running time when it is heard, loudness in dB, file time), see _level
         self._beat = Beat()
+        self._grids = grids()
 
     def level(self):
         """The beat of what is heard now: the measurements wait until the playback clock reaches them."""
         if not self.playing:
             return 0.0
         now = self._now()
+        grid = self._grids.get(os.path.basename(self._current or "")) if self.builtin else None
         while self._levels and now is not None and self._levels[0][0] <= now:
-            self._level_value = self._beat.feed(self._levels.popleft()[1])
+            _heard, db, at = self._levels.popleft()
+            self._level_value = grid.at(at) if grid and at is not None else self._beat.feed(db)
         return self._level_value
 
     def _now(self):
@@ -186,8 +222,9 @@ class Player:
             rms = st.get_value("rms")
             db = max(rms) if rms else -60
             ok, heard = st.get_uint64("running-time")
+            seen, at = st.get_uint64("stream-time")   # where in the file the window lies (the grid is kept there)
             if ok:
-                self._levels.append((heard, db))
+                self._levels.append((heard, db, at / Gst.SECOND if seen else None))
             else:   # an old GStreamer without the field: use it at once
                 self._level_value = self._beat.feed(db)
 

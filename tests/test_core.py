@@ -448,13 +448,31 @@ def test_pulse_follows_what_is_heard():
     player = music.Player()
     player.playing, clock = True, [0]
     player._now = lambda: clock[0]
-    player._levels.extend([(1_000_000_000, -60.0), (2_000_000_000, -8.0)])
+    player._levels.extend([(1_000_000_000, -60.0, None), (2_000_000_000, -8.0, None)])
     clock[0] = 500_000_000
     assert player.level() == 0.0      # nothing heard yet, although both are already measured
     clock[0] = 1_500_000_000
     assert player.level() == 0.0      # silence
     clock[0] = 2_500_000_000
     assert player.level() > .8        # the loud window after it: a beat
+    player.stop()
+
+
+def test_built_in_tracks_pulse_on_their_beat_grid():
+    import music
+    grids = music.grids()
+    assert grids, "data/music/beats.json is missing"
+    assert all(n.endswith(".ogg") for n in grids)
+    grid = next(iter(grids.values()))
+    for beat in (0.0, 2.0, 10.5, 47.5):                               # a beat flashes, whatever the loudness
+        assert grid.at(beat) > .7
+        assert grid.at(beat + .15) < grid.at(beat)                    # and fades towards the next
+    assert grid.at(.25) < grid.at(0.0) * .5                           # the eighth between two beats is softer
+    player = music.Player()
+    player.playing, player.builtin, player._current = True, True, next(iter(grids))
+    player._now = lambda: 10**12
+    player._levels.append((1, -60.0, 12.0))                           # silent, but on a beat of the grid
+    assert player.level() > .7
     player.stop()
 
 
