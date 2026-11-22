@@ -805,5 +805,7 @@ def fill(page, data, enc="auto", text_only=False):
             page.set_text(lines, colors)
         page.label = f"ANSI · {label}"
     else:
-        page.set_text(clean_text(text.split("\n"), dedent=False) if text_only else text)
+        # any line ending, also the \r alone of old Macs (not splitlines(): it also cuts at form feeds and \x1c..\x1e)
+        rows = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+        page.set_text(clean_text(rows, dedent=False) if text_only else text)
         page.label = label

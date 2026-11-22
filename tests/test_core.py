@@ -105,6 +105,9 @@ def test_text_only_and_copy_skip_art():
     page.set_text("\n".join(lines))
     page.sel = ((0, 0), (0, 14))
     assert page.selected_text() == "Title: x"
+    old_mac = pages.Page(CFG)
+    pages.fill(old_mac, b"Title: x\rmore text", text_only=True)   # old Mac line ends: still two lines
+    assert old_mac.lines == ["Title: x", "more text"]
 
 
 def test_page_links_search_and_render():
