@@ -171,6 +171,22 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px}
 footer a{color:var(--sub)}
 footer .links{display:flex;flex-wrap:wrap;gap:22px}
 footer .credits{width:100%;font-size:14.5px;color:var(--foot);opacity:.9}
+
+/* enlarged screenshots */
+img.zoom{cursor:zoom-in}
+img.zoom:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+dialog.lightbox{border:0;padding:0;margin:0;max-width:none;max-height:none;width:100vw;height:100vh;background:transparent;color:var(--tagline)}
+dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
+.lightbox .stage{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:56px 64px 24px}
+.lightbox img{max-width:100%;max-height:calc(100vh - 150px);width:auto;height:auto;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.6);cursor:zoom-out}
+.lightbox .cap{font-size:16px;color:var(--sub);text-align:center;max-width:860px;min-height:1.6em}
+.lightbox button{position:absolute;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--panel-line);background:rgba(16,20,58,.85);color:var(--white);font:400 26px/1 Lato,sans-serif;cursor:pointer}
+.lightbox button:hover{background:rgba(74,163,255,.3)}
+.lightbox button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lightbox .x{top:14px;right:14px}
+.lightbox .prev{left:12px;top:50%;margin-top:-23px}
+.lightbox .next{right:12px;top:50%;margin-top:-23px}
+@media(max-width:700px){.lightbox .stage{padding:64px 10px 18px}.lightbox .prev,.lightbox .next{top:auto;bottom:14px;margin:0}.lightbox .prev{left:14px}.lightbox .next{right:14px}.lightbox .cap{padding:0 56px}}
 </style>
 </head>
 <body>
@@ -321,6 +337,16 @@ footer .credits{width:100%;font-size:14.5px;color:var(--foot);opacity:.9}
   </div>
 </footer>
 
+<dialog class="lightbox" id="lightbox" aria-label="Enlarged screenshot">
+  <div class="stage">
+    <img id="lb-img" alt="" width="1" height="1">
+    <div class="cap" id="lb-cap"></div>
+  </div>
+  <button class="x" type="button" id="lb-close" aria-label="Close">&times;</button>
+  <button class="prev" type="button" id="lb-prev" aria-label="Previous screenshot">&#8249;</button>
+  <button class="next" type="button" id="lb-next" aria-label="Next screenshot">&#8250;</button>
+</dialog>
+
 <script>
 (function () {
   /* trailer: starts muted and loops while visible; one button for sound; no autoplay if the visitor prefers less motion */
@@ -370,6 +396,31 @@ footer .credits{width:100%;font-size:14.5px;color:var(--foot);opacity:.9}
     show(i);
   });
   show(0);
+
+  /* screenshots: a click (or Enter) shows the picture large; Esc or a click closes it; the arrows go to the next one */
+  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap'),
+      shots = [].slice.call(document.querySelectorAll('.gallery img, .winshot img, #why img')), at = 0;
+  if (lb && lb.showModal) {
+    function open(i) {
+      at = (i + shots.length) % shots.length;
+      var s = shots[at], f = s.closest('figure'), c = f && f.querySelector('figcaption');
+      lbImg.src = s.currentSrc || s.src; lbImg.alt = s.alt; lbCap.textContent = c ? c.textContent : s.alt;
+      if (!lb.open) lb.showModal();
+    }
+    shots.forEach(function (s, i) {
+      s.classList.add('zoom'); s.tabIndex = 0; s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Enlarge: ' + s.alt);
+      s.addEventListener('click', function () { open(i); });
+      s.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+    });
+    document.getElementById('lb-close').addEventListener('click', function () { lb.close(); });
+    document.getElementById('lb-prev').addEventListener('click', function () { open(at - 1); });
+    document.getElementById('lb-next').addEventListener('click', function () { open(at + 1); });
+    lbImg.addEventListener('click', function () { lb.close(); });
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target.classList.contains('stage')) lb.close(); });
+    lb.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') open(at - 1); else if (e.key === 'ArrowRight') open(at + 1);
+    });
+  }
   document.querySelectorAll('.copy').forEach(function (b) {
     b.addEventListener('click', function () {
       var text = b.parentNode.querySelector('.code').textContent.trim();
