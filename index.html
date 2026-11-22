@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NfoGlow: NFO art that glows</title>
+<meta name="description" content="Pixel-exact NFO and ANSI art viewer for Linux and Windows, with glow, animations, effects and chiptunes.">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="NfoGlow: NFO art that glows">
+<meta property="og:description" content="Pixel-exact NFO and ANSI art on Linux and Windows, with glow, animations, effects and chiptunes.">
+<meta property="og:image" content="https://digitgram.github.io/nfoglow/img/social.png">
+<link rel="icon" type="image/svg+xml" href="img/icon.svg">
+<style>
+@font-face{font-family:Lato;font-weight:300;src:url(fonts/Lato-Light.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Lato;font-weight:400;src:url(fonts/Lato-Regular.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Lato;font-weight:700;src:url(fonts/Lato-Bold.woff2) format("woff2");font-display:swap}
+
+:root{
+  --bg:#0a0c1c;            /* banner: night navy */
+  --bg2:#10143a;
+  --panel-line:rgba(140,168,228,.18);
+  --accent:#4aa3ff;        /* icon glow blue */
+  --violet:#b36bff;        /* the magenta of the demo NFO */
+  --white:#fff;
+  --tagline:#e1e8ff;
+  --sub:#8ca8e4;
+  --foot:#7d98d4;
+  --radius:18px;
+  --wrap:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--tagline);
+  font:400 18px/1.6 Lato,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img,video{max-width:100%;height:auto;display:block}
+code{font:400 .92em ui-monospace,"DejaVu Sans Mono",monospace;color:var(--tagline)}
+kbd{font:700 .8em Lato,sans-serif;padding:1px 7px;border:1px solid var(--panel-line);border-bottom-width:2px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--tagline)}
+.wrap{width:min(var(--wrap),100% - 32px);margin-inline:auto}
+
+/* ---------- top bar ---------- */
+.nav{position:absolute;inset:0 0 auto 0;z-index:5}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.nav .brand{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:700;font-size:19px}
+.nav .brand img{width:30px;height:30px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:16px}
+.nav ul a{color:var(--sub)}
+.nav ul a:hover{color:var(--white);text-decoration:none}
+@media(max-width:700px){.nav ul li:not(:last-child){display:none}}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;overflow:hidden;padding:150px 0 110px;
+  background:
+    radial-gradient(900px 600px at 95% 8%,rgba(40,60,170,.65),transparent 65%),
+    radial-gradient(800px 600px at 0% 100%,rgba(90,35,140,.7),transparent 65%),
+    linear-gradient(160deg,#080a1e 0%,#0c1030 55%,#1a1342 100%);
+}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,4.6fr) minmax(0,6.4fr);gap:48px;align-items:center}
+.app-icon{width:136px;height:auto;filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 0 44px rgba(74,163,255,.28));margin-bottom:30px}
+.title{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px}
+h1{margin:0;color:var(--white);font-weight:700;font-size:clamp(46px,6.4vw,80px);line-height:1;letter-spacing:-.02em}
+.tagline{margin:18px 0 0;font-weight:300;font-size:clamp(24px,3vw,36px);color:var(--tagline);line-height:1.25}
+.lead{margin:18px 0 0;color:var(--sub);font-size:20px;max-width:28em}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:12px;
+  font-weight:700;font-size:17px;border:1px solid var(--panel-line);color:var(--white);background:rgba(255,255,255,.06);
+  transition:transform .12s,background .12s;
+}
+.btn:hover{background:rgba(255,255,255,.12);text-decoration:none;transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(#5db0ff,#2a78e0);color:#04122b;border-color:transparent;box-shadow:0 8px 24px rgba(42,120,224,.42)}
+.btn.primary:hover{background:linear-gradient(#72bcff,#3a86ec)}
+.meta{margin-top:28px;color:var(--foot);font-size:16px}
+.meta span+span::before{content:"·";margin:0 .6em}
+
+/* the trailer */
+.player{
+  position:relative;border-radius:12px;overflow:hidden;background:#05060f;
+  box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(140,168,228,.22),0 0 90px rgba(74,163,255,.14);
+  aspect-ratio:1200/742;
+}
+.caption{margin-top:22px;display:flex;align-items:center;gap:18px;min-height:64px}
+.caption .txt{flex:1;min-width:0;transition:opacity .25s}
+.caption .txt.out{opacity:0}
+.caption strong{display:block;color:var(--white);font-size:20px;line-height:1.3}
+.caption span{display:block;color:var(--sub);font-size:16px;line-height:1.4}
+.dots{display:flex;gap:8px;flex:none}
+.dots button{width:12px;height:12px;padding:0;border-radius:50%;border:0;background:rgba(140,168,228,.32);cursor:pointer;transition:background .2s,transform .2s}
+.dots button:hover{background:rgba(140,168,228,.6)}
+.dots button[aria-current=true]{background:var(--accent);transform:scale(1.25);box-shadow:0 0 12px rgba(74,163,255,.7)}
+@media(max-width:520px){.caption{flex-direction:column;align-items:flex-start;gap:12px}}
+.player video{width:100%;height:100%;object-fit:cover}
+.player button{
+  position:absolute;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(8,10,30,.62);backdrop-filter:blur(6px);color:#fff;font:700 14px Lato,sans-serif;cursor:pointer;
+}
+.player button:hover{background:rgba(8,10,30,.85)}
+.player button svg{width:18px;height:18px;fill:currentColor}
+.player .play{
+  inset:0;right:0;bottom:0;margin:auto;width:84px;height:84px;padding:0;justify-content:center;border-radius:50%;
+  background:rgba(74,163,255,.9);color:#04122b;border:0;box-shadow:0 0 50px rgba(74,163,255,.6)
+}
+.player .play svg{width:34px;height:34px}
+.player .play[hidden],.player .snd[hidden]{display:none}
+
+@media(max-width:900px){
+  .hero{padding:120px 0 70px}
+  .hero .wrap{grid-template-columns:1fr;gap:44px}
+  .app-icon{width:108px;margin-bottom:22px}
+}
+
+/* ---------- sections ---------- */
+section{padding:96px 0}
+h2{margin:0 0 14px;color:var(--white);font-size:clamp(30px,4vw,44px);line-height:1.15;letter-spacing:-.01em}
+.kicker{color:var(--accent);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.intro{color:var(--sub);max-width:36em;margin:0 0 48px;font-size:20px}
+
+/* what makes it different */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:48px;align-items:center}
+.split p{color:var(--sub);font-size:19px;margin:0 0 16px}
+.split p b{color:var(--tagline)}
+.split img{border-radius:14px;box-shadow:0 22px 50px rgba(0,0,0,.5),0 0 0 1px var(--panel-line)}
+@media(max-width:900px){.split{grid-template-columns:minmax(0,1fr)}}
+
+/* features */
+.features{background:var(--bg2);border-block:1px solid var(--panel-line)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:rgba(255,255,255,.035);border:1px solid var(--panel-line);border-radius:var(--radius);padding:26px 26px 24px}
+.card h3{margin:0 0 8px;color:var(--white);font-size:20px;display:flex;align-items:center;gap:10px}
+.card h3 i{font-style:normal;display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:rgba(179,107,255,.18);font-size:17px}
+.card p{margin:0;color:var(--sub);font-size:16.5px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+.gallery figure{margin:0}
+.gallery img{border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.gallery figcaption{margin-top:12px;color:var(--sub);font-size:15.5px;text-align:center}
+.winshot{margin:34px auto 0;max-width:860px}
+.winshot img{border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.winshot figcaption{margin-top:12px;color:var(--sub);font-size:15.5px;text-align:center}
+@media(max-width:800px){.gallery{grid-template-columns:1fr;max-width:460px;margin-inline:auto}}
+
+/* install: one card per platform */
+.platforms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.plat{background:var(--bg2);border:1px solid var(--panel-line);border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;gap:14px}
+.plat h3{margin:0;color:var(--white);font-size:26px;display:flex;align-items:center;gap:12px}
+.plat p{margin:0;color:var(--sub);font-size:17px}
+.plat ul{margin:0;padding-left:1.1em;color:var(--sub);font-size:16.5px}
+.plat li{margin:.35em 0}
+.plat li b{color:var(--tagline)}
+.plat .btn{align-self:flex-start;margin-top:auto}
+.codewrap{position:relative}
+.code{background:#05071a;border:1px solid var(--panel-line);border-radius:14px;padding:18px 74px 18px 20px;
+  font:400 14.5px/1.55 ui-monospace,"JetBrains Mono","DejaVu Sans Mono",monospace;color:#d4defa;overflow-x:auto;white-space:pre}
+.copy{position:absolute;top:10px;right:10px;padding:6px 12px;border-radius:8px;border:1px solid var(--panel-line);
+  background:rgba(255,255,255,.07);color:var(--tagline);font:700 13px Lato,sans-serif;cursor:pointer}
+.copy:hover{background:rgba(255,255,255,.14)}
+.note{margin-top:28px;color:var(--foot);font-size:16px}
+@media(max-width:900px){.platforms{grid-template-columns:minmax(0,1fr)}}
+
+/* footer */
+footer{padding:56px 0 64px;border-top:1px solid var(--panel-line);color:var(--foot);font-size:16px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px}
+footer a{color:var(--sub)}
+footer .links{display:flex;flex-wrap:wrap;gap:22px}
+footer .credits{width:100%;font-size:14.5px;color:var(--foot);opacity:.9}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/icon.svg" alt="">NfoGlow</a>
+    <ul>
+      <li><a href="#why">Why</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="https://github.com/DigitGram/nfoglow">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <img class="app-icon" src="img/icon-3d.png" alt="NfoGlow icon" width="261" height="264">
+      <div class="title"><h1>NfoGlow</h1></div>
+      <p class="tagline">NFO art that glows.</p>
+      <p class="lead">Pixel-exact NFO and ANSI art on Linux and Windows, with glow, animations, effects and chiptunes.</p>
+      <div class="cta">
+        <a class="btn primary" href="#install">Get NfoGlow</a>
+        <a class="btn" href="https://github.com/DigitGram/nfoglow">View on GitHub</a>
+      </div>
+      <p class="meta"><span>GPL-3.0</span><span>Linux + Windows</span><span>10 languages</span></p>
+    </div>
+
+    <div class="stage">
+    <div class="player" id="player">
+      <video id="trailer" muted loop playsinline preload="metadata" poster="media/poster.webp" aria-label="A short trailer of NfoGlow: effects on opening, neon glow, demoscene mode, retro tube, themes and styles">
+        <source src="media/nfoglow-promo.mp4" type="video/mp4">
+      </video>
+      <button class="play" id="play" type="button" aria-label="Play the trailer" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      </button>
+      <button class="snd" id="snd" type="button" aria-pressed="false" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path id="snd-ico" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+        <span id="snd-txt">Sound on</span>
+      </button>
+    </div>
+    <div class="caption">
+      <div class="txt" id="cap"><strong>Effects on opening</strong><span>Code rain, C64 tape loader, DOS boot and five more</span></div>
+      <div class="dots" id="dots" role="group" aria-label="Trailer scenes"></div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="wrap split">
+    <div>
+      <div class="kicker">Why NfoGlow</div>
+      <h2>The art, the way the scene meant it.</h2>
+      <p>Most text viewers draw the block characters <code>█ ▀ ▄ ░ ▒ ▓</code> with a font, which leaves gaps and seams in the art.</p>
+      <p><b>NfoGlow paints them as exact pixels</b>, optionally with a soft glow, and keeps the text crisp. CP437 works out of the box, and NFOs that an editor broke into UTF-8 are repaired.</p>
+    </div>
+    <img src="img/demoscene.webp" alt="The Demoscene style with the effects sidebar: colour cycling, stars and the sine scroller" width="1230" height="750">
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="kicker">Features</div>
+    <h2>A viewer with a lot of show in it.</h2>
+    <p class="intro">Switch it all off for a clean reader, or turn it up until the monitor hums.</p>
+    <div class="grid">
+      <div class="card"><h3><i>✦</i>Glow</h3><p>Soft edges or a neon glow behind crisp blocks, a colour ramp through every block, a phosphor glow around the text.</p></div>
+      <div class="card"><h3><i>▤</i>Old monitors</h3><p>Scanlines, shadow mask or aperture grille, or a live CRT with a rolling bar, flicker, noise and round corners. VGA font included.</p></div>
+      <div class="card"><h3><i>◈</i>Six styles</h3><p>Classic, Soft, Neon, Tube, Retrowave and Demoscene in one click. Every effect can still be fine-tuned.</p></div>
+      <div class="card"><h3><i>★</i>Demoscene mode</h3><p>Colour cycling in C64 colours, a wobbling logo, warp stars, a sine scroller, sparkles and a glow that pulses to the beat.</p></div>
+      <div class="card"><h3><i>▶</i>Eight opening effects</h3><p>Modem build-up, C64 tape loader, CRT power-on, DOS boot, glitch, dither fade-in, neon flicker or a code rain.</p></div>
+      <div class="card"><h3><i>♫</i>Music</h3><p>Nine built-in chiptunes, or your own folder of MOD, XM, S3M, IT, OGG, MP3, FLAC and WAV. Off by default.</p></div>
+      <div class="card"><h3><i>⚄</i>Random look</h3><p>Roll a new combination, keep the one you like and undo any change with <kbd>Ctrl</kbd>+<kbd>Z</kbd>. Share a look as one line of text.</p></div>
+      <div class="card"><h3><i>▣</i>Real files</h3><p>CP437, UTF-8, ANSI in 16, 256 and true colour, SAUCE. Open an NFO straight from a ZIP or a ReScene <code>.srr</code>.</p></div>
+      <div class="card"><h3><i>⇩</i>Export</h3><p>Save as PNG or PDF, or copy the whole NFO to the clipboard. Selecting and copying can skip the block graphics.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="kicker">Screenshots</div>
+    <h2>Eight themes, endless looks.</h2>
+    <p class="intro">From C64 blue to black and white. Every theme brings its own colour ramp.</p>
+    <div class="gallery">
+      <figure><img src="img/c64.webp" alt="The C64 theme with its light blue border" loading="lazy" width="960" height="800"><figcaption>C64 theme with its light blue border</figcaption></figure>
+      <figure><img src="img/crt.webp" alt="Amber theme as a tube with shadow mask and scanlines" loading="lazy" width="850" height="690"><figcaption>Amber tube with shadow mask and scanlines</figcaption></figure>
+      <figure><img src="img/light.webp" alt="An NFO in the light theme with neon glow" loading="lazy" width="850" height="690"><figcaption>Light theme with neon glow</figcaption></figure>
+    </div>
+    <p class="note">The three screenshots show NfoGlow for Linux (GTK 4 and libadwaita). On Windows it looks like this:</p>
+    <figure class="winshot"><img src="img/windows-light-sidebar.webp" alt="NfoGlow for Windows 11 with the effects sidebar open, showing the light theme with neon glow" loading="lazy" width="1035" height="697"><figcaption>NfoGlow for Windows 11: the same art, effects and look codes in a window in the style of Windows</figcaption></figure>
+  </div>
+</section>
+
+<section class="features install" id="install">
+  <div class="wrap">
+    <div class="kicker">Get NfoGlow</div>
+    <h2>One app, two platforms.</h2>
+    <p class="intro">Same effects, same look codes, and the same ten languages on both.</p>
+    <div class="platforms">
+
+      <div class="plat">
+        <h3>Linux</h3>
+        <p>Python 3 with GTK 4 and libadwaita 1.5 or newer (GNOME 46+). Installs for the current user, no root.</p>
+        <div class="codewrap">
+          <div class="code">curl -fsSL https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh | bash</div>
+          <button class="copy" type="button" aria-label="Copy the install command">Copy</button>
+        </div>
+        <ul>
+          <li>Opens <code>.nfo</code>, <code>.diz</code> and <code>.ans</code> files. Choose it once under <i>Open With</i> if another program is set.</li>
+          <li>A Flatpak recipe is included in the repository.</li>
+          <li>No network connections of its own.</li>
+        </ul>
+        <a class="btn" href="https://github.com/DigitGram/nfoglow">NfoGlow for Linux on GitHub</a>
+      </div>
+
+      <div class="plat">
+        <h3>Windows</h3>
+        <p>For Windows 10 and 11, 64-bit. The official port of NfoGlow, written in Rust. The setup installs for you only, without administrator rights, or for all users.</p>
+        <ul>
+          <li>Start menu entry and an optional desktop shortcut.</li>
+          <li>Optionally opens <code>.nfo</code> <code>.diz</code> <code>.ans</code> <code>.asc</code> <code>.srr</code> files with NfoGlow.</li>
+          <li>Settings and look codes (<code>nfoglow:1:…</code>) are the same as on Linux.</li>
+          <li>Not code-signed yet, so SmartScreen may ask once: <i>More info</i>, then <i>Run anyway</i>. The checksums of every release are signed.</li>
+        </ul>
+        <a class="btn primary" href="https://github.com/DigitGram/nfoglow-windows/releases/latest">Download the installer</a>
+      </div>
+
+    </div>
+    <p class="note">Both are free software under the GPL-3.0-or-later. Releases are signed: the Linux installer, and the checksums of the Windows setup. The README of each has the fingerprint and the steps to check it.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 DigitGram · NfoGlow is free software under the GPL-3.0-or-later.</div>
+    <div class="links">
+      <a href="https://github.com/DigitGram/nfoglow">Linux</a>
+      <a href="https://github.com/DigitGram/nfoglow-windows">Windows</a>
+      <a href="https://liberapay.com/DigitGram">Support on Liberapay</a>
+    </div>
+    <div class="credits">Inspired by <a href="https://github.com/syndicodefront/infekt">iNFekt</a>. Music: chiptunes by <a href="https://soundcloud.com/autistgamer1337/sets/chiptunes">Stennish</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). DOS font: PxPlus IBM VGA 8x16 by VileR (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>).</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* trailer: starts muted and loops while visible; one button for sound; no autoplay if the visitor prefers less motion */
+  var v = document.getElementById('trailer'), play = document.getElementById('play'), snd = document.getElementById('snd'),
+      txt = document.getElementById('snd-txt'),
+      reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, visible = true, wanted = !reduce;
+  function sync() { txt.textContent = v.muted ? 'Sound on' : 'Sound off'; snd.setAttribute('aria-pressed', v.muted ? 'false' : 'true'); }
+  function start() { var p = v.play(); if (p && p.catch) p.catch(function () { play.hidden = false; snd.hidden = true; }); }
+  if (reduce) { play.hidden = false; } else { snd.hidden = false; start(); }
+  v.addEventListener('playing', function () { play.hidden = true; snd.hidden = false; });
+  play.addEventListener('click', function () { wanted = true; v.muted = false; sync(); start(); });
+  snd.addEventListener('click', function () { v.muted = !v.muted; sync(); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) {
+      visible = e[0].isIntersecting;
+      if (!visible) v.pause(); else if (wanted) start();
+    }, { threshold: 0.25 }).observe(v);
+  }
+  /* captions: the scenes of the trailer, shown under the video; the dots jump to a scene */
+  var scenes = [
+    [0,    'Effects on opening', 'Code rain, C64 tape loader, DOS boot and five more'],
+    [2.4,  'Neon glow',          'A gleam, sparkles and a glow that pulses to the beat'],
+    [5.85, 'Demoscene mode',     'Colour cycling, a wobbling logo, stars and a sine scroller'],
+    [9.35, 'Retro tube',         'Shadow mask, live CRT, colour fringe and the IBM VGA font'],
+    [12.6, 'Eight themes',       'From C64 blue to black and white'],
+    [15.85,'Styles in one click','Six styles, a random look and undo']
+  ], cap = document.getElementById('cap'), dots = document.getElementById('dots'), cur = 0, swap = 0;
+  scenes.forEach(function (s, i) {
+    var d = document.createElement('button');
+    d.type = 'button'; d.setAttribute('aria-label', s[1]);
+    d.addEventListener('click', function () { v.currentTime = s[0] + 0.05; if (v.paused && wanted) start(); show(i); });
+    dots.appendChild(d);
+  });
+  function show(i) {
+    if (i === cur && cap.dataset.ready) return;
+    cur = i; cap.dataset.ready = '1';
+    [].forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    cap.classList.add('out'); clearTimeout(swap);
+    swap = setTimeout(function () {
+      cap.innerHTML = ''; var a = document.createElement('strong'), b = document.createElement('span');
+      a.textContent = scenes[i][1]; b.textContent = scenes[i][2]; cap.appendChild(a); cap.appendChild(b);
+      cap.classList.remove('out');
+    }, 180);
+  }
+  v.addEventListener('timeupdate', function () {
+    var i = 0; while (i + 1 < scenes.length && v.currentTime >= scenes[i + 1][0]) i++;
+    show(i);
+  });
+  show(0);
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = b.parentNode.querySelector('.code').textContent.trim();
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+        b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+      }).catch(function () { b.textContent = 'Press Ctrl+C'; });
+    });
+  });
+})();
+</script>
+</body>
+</html>
