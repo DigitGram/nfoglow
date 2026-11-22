@@ -164,9 +164,9 @@ class EffectsSidebar:
                 styles, strength, switch("app.ramp", N_("Color ramp")), switch("app.text-glow", N_("Text glow")),
                 switch("app.neon-flicker", N_("Flicker"), N_("Flickers now and then, like an old sign; needs Neon")),
                 switch("app.pulse", N_("Pulse"), N_("Neon glow to the beat; needs Neon")))
-        section(N_("Edges"), "applications-graphics-symbolic", list,
-                switch("app.smooth", N_("Smooth edges"), N_("Rounds the pixel steps of the block art, with anti-aliasing")))
-        section(N_("Animation"), "media-playback-start-symbolic", list,
+        section(N_("Animation"), "media-playback-start-symbolic",
+                lambda: [_(OPENINGS[o])] if (o := self.cfg["opening"]) in OPENINGS and o != "off" else [],
+                self.opening_row,
                 switch("app.cycle", N_("Color cycling")),
                 switch("app.wobble", N_("Wobble")),
                 switch("app.stars", N_("Starfield")),
@@ -178,11 +178,11 @@ class EffectsSidebar:
                 switch("app.crt-live", N_("Live CRT"), N_("A roll bar, flicker, noise and round corners")),
                 switch("app.chroma", N_("Color fringe"), N_("Red and blue edges, like an old tube or a VHS tape")),
                 switch("app.dos-font", N_("DOS font"), N_("The IBM VGA font, as NFOs looked under DOS")))
-        section(N_("On opening"), "document-open-symbolic",
-                lambda: [_(OPENINGS.get(self.cfg["opening"], OPENINGS["off"]))], self.opening_row)
         sound = switch("app.music", N_("Music"))
         sound.set_sensitive(music.available())
-        section(N_("Sound"), "audio-x-generic-symbolic", list, sound)
+        section(N_("Other"), "view-more-symbolic", list,
+                switch("app.smooth", N_("Smooth edges"), N_("Rounds the pixel steps of the block art, with anti-aliasing")),
+                sound)
         self.show_summaries()
         fine = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE, css_classes=["boxed-list"])
         for expander in sections:
