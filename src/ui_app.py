@@ -103,7 +103,6 @@ class App(SettingsDialog, Adw.Application):
                           ("win.reload", "F5 <Ctrl>r"), ("win.toggle-effects", "F9"), ("app.undo", "<Ctrl>z"), ("app.music", "<Ctrl>m"),
                           ("app.preferences", "<Ctrl>comma"), ("app.shortcuts", "<Ctrl>question"), ("window.close", "<Ctrl>w"), ("app.quit", "<Ctrl>q")):
             self.set_accels_for_action(act, keys.split())
-        self._scheme()
         self._apply_music()
 
     def do_shutdown(self):
@@ -290,8 +289,6 @@ class App(SettingsDialog, Adw.Application):
         if key == "language":
             GLib.idle_add(self._rebuild, True)   # not from inside the drop-down's own signal
             return
-        if key in ("theme", "custom"):
-            self._scheme()
         if key == "theme" and not rolled and not self._undoing:   # a theme brings its colour ramp along
             ramp = ramp_for_theme(value, self.cfg["ramp_colors"])
             if ramp:
@@ -310,15 +307,10 @@ class App(SettingsDialog, Adw.Application):
                 w.setting_changed(key)
 
     def _system_theme(self):
-        """Dark or Light, as the desktop is set; for the first start and after a reset (later _scheme() forces
-        the window to the chosen theme again)."""
+        """Dark or Light, as the desktop is set; for the first start and after a reset. The window itself always
+        follows the desktop (the libadwaita default), whatever the theme: the theme colours the page only."""
         style = Adw.StyleManager.get_default()
-        style.set_color_scheme(Adw.ColorScheme.DEFAULT)
         return "dark" if style.get_dark() else "light"
-
-    def _scheme(self):
-        dark = core.theme_colors(self.cfg)[4]
-        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK if dark else Adw.ColorScheme.FORCE_LIGHT)
 
     def _rebuild(self, reopen_prefs=False):
         """A new language: replace every window by a new one showing the same file."""
@@ -503,6 +495,5 @@ class App(SettingsDialog, Adw.Application):
         self._allow_pulse()
         if prefs:
             prefs.close()
-        self._scheme()
         self._apply_music()
         GLib.idle_add(self._rebuild)   # new windows show every default (zoom, language, ...) at once

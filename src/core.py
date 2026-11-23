@@ -170,7 +170,7 @@ def read_look_code(text, keys, choices):
 def _hex(h):
     return tuple(int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
 
-# name: (background, text, art, link, dark window chrome)
+# name: (background, text, art, link, dark theme; the window itself follows the desktop)
 THEMES = {k: (*map(_hex, v[:4]), v[4]) for k, v in {
     "light":    ("#ffffff", "#1a1a1a", "#1046a0", "#0b57d0", False),
     "bw":       ("#ffffff", "#000000", "#000000", "#0000cc", False),   # black on white, as NFOs long looked in plain viewers
