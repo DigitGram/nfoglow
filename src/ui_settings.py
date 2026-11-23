@@ -157,7 +157,7 @@ class SettingsDialog:
         retro.add(self._combo(_("Pattern"), CRT_MASKS, "crt_mask"))
         retro.add(self._switch(_("Live CRT"), _("A roll bar, flicker, noise and round corners"),
                                "crt_live"))
-        retro.add(self._switch(_("Color fringe"), _("Red and blue edges, like an old tube or a VHS tape"), "chroma"))
+        retro.add(self._switch(_("Color fringe"), _("Red and blue edges, like an old CRT or a VHS tape"), "chroma"))
         dos = Adw.SwitchRow(title=_("DOS font"), subtitle=_("The IBM VGA font, as NFOs looked under DOS"),
                             active=self.cfg["font"] == core.DOS_FONT, sensitive=self.lookup_action("dos-font").get_enabled())
         dos.connect("notify::active", lambda r, _p: r.get_active() != (self.cfg["font"] == core.DOS_FONT)

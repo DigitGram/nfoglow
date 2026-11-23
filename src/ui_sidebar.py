@@ -176,7 +176,7 @@ class EffectsSidebar:
         section(N_("Retro"), "video-display-symbolic", list,
                 switch("app.crt", N_("CRT screen")),   # its gear leads to the pattern
                 switch("app.crt-live", N_("Live CRT"), N_("A roll bar, flicker, noise and round corners")),
-                switch("app.chroma", N_("Color fringe"), N_("Red and blue edges, like an old tube or a VHS tape")),
+                switch("app.chroma", N_("Color fringe"), N_("Red and blue edges, like an old CRT or a VHS tape")),
                 switch("app.dos-font", N_("DOS font"), N_("The IBM VGA font, as NFOs looked under DOS")))
         sound = switch("app.music", N_("Music"))
         sound.set_sensitive(music.available())

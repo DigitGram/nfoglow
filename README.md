@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/media/nfoglow-tour.webp" width="100%" alt="A tour of NfoGlow: effects on opening, neon glow, the demoscene mode, a retro tube, eight themes and six styles, shown on the demo NFO">
+  <img src="docs/media/nfoglow-tour.webp" width="100%" alt="A tour of NfoGlow: effects on opening, neon glow, the demoscene mode, retro CRT effects, eight themes and six styles, shown on the demo NFO">
 </p>
 
 Inspired by the Windows classic [iNFekt](https://github.com/syndicodefront/infekt).
@@ -55,7 +55,7 @@ NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the 
 - **Clean art.** Block graphics as exact pixels, without seams.
 - **Smooth edges, for the pixel haters.** If you cannot stand a staircase: one switch turns the steps of the block art into straight diagonals and round curves, anti-aliased, and lets the ░▒▓ shading fade softly. Off by default, because some of us like our pixels.
 - **Effects (F9).** Neon glow, phosphor glow, colour ramps, scanlines, shadow mask, a live CRT and the IBM VGA font. The sidebar moves the NFO aside instead of covering it.
-- **Styles.** Classic, Soft, Neon, Tube, Retrowave and Demoscene set everything with one click; every effect can still be tuned on its own.
+- **Styles.** Classic, Soft, Neon, CRT, Retrowave and Demoscene set everything with one click; every effect can still be tuned on its own.
 - **Demoscene mode.** Colour cycling, wobbling logo, stars, sine scroller, sparkles and a glow that pulses to the music, plus one of eight opening effects (modem build-up, C64 loader, DOS boot, CRT power-on, code rain and more). Off by default.
 - **Random look.** Roll a new combination with one click, keep it or get a fresh one at every start. Ctrl+Z undoes any change.
 - **Music.** Nine built-in chiptunes by Stennish, or your own folder of MOD, XM, S3M, IT, OGG, MP3, FLAC and WAV (e.g. from [The Mod Archive](https://modarchive.org)). Off by default.
@@ -68,7 +68,7 @@ NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the 
 
 <p align="center">
   <img src="docs/screenshots/demoscene.png" width="32%" alt="The Demoscene style with the effects sidebar: colour cycling, stars and the sine scroller">
-  <img src="docs/screenshots/crt.png" width="32%" alt="Amber theme as a tube with shadow mask and scanlines">
+  <img src="docs/screenshots/crt.png" width="32%" alt="Amber theme on a CRT with shadow mask and scanlines">
   <img src="docs/screenshots/c64.png" width="32%" alt="The C64 theme with its light blue border">
 </p>
 

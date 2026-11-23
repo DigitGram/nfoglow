@@ -24,7 +24,7 @@
       <li xml:lang="de">NFO, DIZ und ANSI-Art in Farbe</li>
       <li>Glow as soft edges or neon, a glow around the text and a colour ramp through the art</li>
       <li xml:lang="de">Glühen als weiche Kanten oder Neon, Glühen um den Text und Farbverlauf durch die Grafik</li>
-      <li>Retro: scanlines, shadow mask or aperture grille, a live CRT with picture noise, a colour fringe like an old tube and the IBM VGA font of the old PCs</li>
+      <li>Retro: scanlines, shadow mask or aperture grille, a live CRT with picture noise, a colour fringe like an old CRT and the IBM VGA font of the old PCs</li>
       <li xml:lang="de">Retro: Scanlines, Loch- oder Streifenmaske, Live-CRT mit Bildrauschen, Farbsaum wie bei einer alten Röhre und die IBM-VGA-Schrift der alten PCs</li>
       <li>Demoscene mode: colour cycling, a wobbling logo, drifting or warp stars, a gleam, sparkles, a sine scroller and a glow that pulses to the beat</li>
       <li xml:lang="de">Demoszene-Modus: Farbzyklus, wabbelndes Logo, treibende oder Warp-Sterne, Glanzlicht, Glitzern, Laufschrift und Glühen im Takt der Musik</li>
@@ -69,7 +69,7 @@
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/crt.png</image>
-      <caption>Amber theme as a tube with shadow mask and scanlines</caption>
+      <caption>Amber theme on a CRT with shadow mask and scanlines</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/DigitGram/nfoglow/main/docs/screenshots/preferences.png</image>

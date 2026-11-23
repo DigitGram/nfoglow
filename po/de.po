@@ -508,7 +508,7 @@ msgid "The NFO appears line by line, like over a 2400 baud BBS; a click or key s
 msgstr "Die NFO erscheint Zeile für Zeile wie über eine 2400-Baud-Mailbox; ein Klick oder eine Taste überspringt es"
 
 #: src/ui_common.py
-msgid "Tube"
+msgid "CRT"
 msgstr "Röhre"
 
 #: src/ui_window.py
@@ -765,7 +765,7 @@ msgstr "Neon-Anflimmern"
 msgid "Opens at once"
 msgstr "Öffnet sofort"
 
-msgid "A bright line grows into the picture, like a tube TV switching on; a click or key skips it"
+msgid "A bright line grows into the picture, like an old CRT TV switching on; a click or key skips it"
 msgstr "Eine helle Linie wächst zum Bild, wie bei einem Röhrenfernseher, der angeht; ein Klick oder eine Taste überspringt es"
 
 msgid "The picture builds up in dithered steps, like ░ ▒ ▓ █; a click or key skips it"
@@ -846,7 +846,7 @@ msgstr "Einzelne Blöcke der Grafik blitzen auf"
 msgid "Color fringe"
 msgstr "Farbsaum"
 
-msgid "Red and blue edges, like an old tube or a VHS tape"
+msgid "Red and blue edges, like an old CRT or a VHS tape"
 msgstr "Rote und blaue Ränder, wie bei einer alten Röhre oder einer VHS-Kassette"
 
 msgid "A roll bar, flicker, noise and round corners"

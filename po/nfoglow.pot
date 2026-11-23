@@ -244,7 +244,7 @@ msgid "A C64 screen types LOAD and loads with colored stripes in its border; a c
 msgstr ""
 
 #: src/ui_common.py
-msgid "A bright line grows into the picture, like a tube TV switching on; a click or key skips it"
+msgid "A bright line grows into the picture, like an old CRT TV switching on; a click or key skips it"
 msgstr ""
 
 #: src/ui_common.py
@@ -288,7 +288,7 @@ msgid "Soft"
 msgstr ""
 
 #: src/ui_common.py
-msgid "Tube"
+msgid "CRT"
 msgstr ""
 
 #: src/ui_common.py
@@ -616,7 +616,7 @@ msgid "Color fringe"
 msgstr ""
 
 #: src/ui_settings.py
-msgid "Red and blue edges, like an old tube or a VHS tape"
+msgid "Red and blue edges, like an old CRT or a VHS tape"
 msgstr ""
 
 #: src/ui_settings.py
