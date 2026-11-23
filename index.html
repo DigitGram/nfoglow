@@ -220,7 +220,7 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
 
     <div class="stage">
     <div class="player" id="player">
-      <video id="trailer" muted loop playsinline preload="metadata" poster="media/poster.webp" aria-label="A short trailer of NfoGlow: effects on opening, neon glow, demoscene mode, retro tube, themes and styles">
+      <video id="trailer" muted loop playsinline preload="metadata" poster="media/poster.webp" aria-label="A short trailer of NfoGlow: effects on opening, neon glow, demoscene mode, retro CRT effects, themes and styles">
         <source src="media/nfoglow-promo.mp4" type="video/mp4">
       </video>
       <button class="play" id="play" type="button" aria-label="Play the trailer" hidden>
@@ -259,7 +259,7 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
     <div class="grid">
       <div class="card"><h3><i>✦</i>Glow</h3><p>Soft edges or a neon glow behind crisp blocks, a colour ramp through every block, a phosphor glow around the text.</p></div>
       <div class="card"><h3><i>▤</i>Old monitors</h3><p>Scanlines, shadow mask or aperture grille, or a live CRT with a rolling bar, flicker, noise and round corners. VGA font included.</p></div>
-      <div class="card"><h3><i>◈</i>Six styles</h3><p>Classic, Soft, Neon, Tube, Retrowave and Demoscene in one click. Every effect can still be fine-tuned.</p></div>
+      <div class="card"><h3><i>◈</i>Six styles</h3><p>Classic, Soft, Neon, CRT, Retrowave and Demoscene in one click. Every effect can still be fine-tuned.</p></div>
       <div class="card"><h3><i>★</i>Demoscene mode</h3><p>Colour cycling in C64 colours, a wobbling logo, warp stars, a sine scroller, sparkles and a glow that pulses to the beat.</p></div>
       <div class="card"><h3><i>▶</i>Eight opening effects</h3><p>Modem build-up, C64 tape loader, CRT power-on, DOS boot, glitch, dither fade-in, neon flicker or a code rain.</p></div>
       <div class="card"><h3><i>♫</i>Music</h3><p>Nine built-in chiptunes, or your own folder of MOD, XM, S3M, IT, OGG, MP3, FLAC and WAV. Off by default.</p></div>
@@ -277,7 +277,7 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
     <p class="intro">From C64 blue to black and white. Every theme brings its own colour ramp.</p>
     <div class="gallery">
       <figure><img src="img/c64.webp" alt="The C64 theme with its light blue border" loading="lazy" width="960" height="800"><figcaption>C64 theme with its light blue border</figcaption></figure>
-      <figure><img src="img/crt.webp" alt="Amber theme as a tube with shadow mask and scanlines" loading="lazy" width="850" height="690"><figcaption>Amber tube with shadow mask and scanlines</figcaption></figure>
+      <figure><img src="img/crt.webp" alt="Amber theme on a CRT with shadow mask and scanlines" loading="lazy" width="850" height="690"><figcaption>Amber CRT with shadow mask and scanlines</figcaption></figure>
       <figure><img src="img/light.webp" alt="An NFO in the light theme with neon glow" loading="lazy" width="850" height="690"><figcaption>Light theme with neon glow</figcaption></figure>
     </div>
     <p class="note">The three screenshots show NfoGlow for Linux (GTK 4 and libadwaita). On Windows it looks like this:</p>
@@ -370,7 +370,7 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
     [0,    'Effects on opening', 'Code rain, C64 tape loader, DOS boot and five more'],
     [2.4,  'Neon glow',          'A gleam, sparkles and a glow that pulses to the beat'],
     [5.85, 'Demoscene mode',     'Colour cycling, a wobbling logo, stars and a sine scroller'],
-    [9.35, 'Retro tube',         'Shadow mask, live CRT, colour fringe and the IBM VGA font'],
+    [9.35, 'Retro effects',      'Shadow mask, live CRT, colour fringe and the IBM VGA font'],
     [12.6, 'Eight themes',       'From C64 blue to black and white'],
     [15.85,'Styles in one click','Six styles, a random look and undo']
   ], cap = document.getElementById('cap'), dots = document.getElementById('dots'), cur = 0, swap = 0;
