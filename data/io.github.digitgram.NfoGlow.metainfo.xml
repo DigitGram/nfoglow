@@ -94,6 +94,11 @@
     <color type="primary" scheme_preference="dark">#1d2340</color>
   </branding>
   <releases>
+    <release version="1.1.1" date="2026-11-23">
+      <description>
+        <p>The window follows the light or dark mode of the desktop, changing the language no longer leaves the old window open, the text-only view splits old Mac line ends, and the effects sidebar is grouped more clearly.</p>
+      </description>
+    </release>
     <release version="1.1" date="2026-11-22">
       <description>
         <p>Smooth edges for the block art, a pulse on the beat of the built-in tracks, an optional update check, and a pasted look that waits for Keep.</p>
