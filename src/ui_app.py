@@ -288,7 +288,7 @@ class App(SettingsDialog, Adw.Application):
         if key == "remember_recent" and not value:
             self._set_recent([])   # turning it off also forgets what is already listed
         if key == "language":
-            GLib.idle_add(self._rebuild)   # not from inside the drop-down's own signal
+            GLib.idle_add(self._rebuild, True)   # not from inside the drop-down's own signal
             return
         if key in ("theme", "custom"):
             self._scheme()
@@ -320,16 +320,24 @@ class App(SettingsDialog, Adw.Application):
         dark = core.theme_colors(self.cfg)[4]
         Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK if dark else Adw.ColorScheme.FORCE_LIGHT)
 
-    def _rebuild(self):
+    def _rebuild(self, reopen_prefs=False):
         """A new language: replace every window by a new one showing the same file."""
         i18n.set_language(self.cfg["language"])
+        prefs_on = None
         for old in list(self.get_windows()):
             if isinstance(old, Window):
                 new = Window(self)
                 if old.path:
                     new.load(old.path, remember=False)
                 new.present()
+                dialog = old.get_visible_dialog()
+                if dialog:   # with a dialog open, close() only closes the dialog and the old window stays
+                    if isinstance(dialog, Adw.PreferencesDialog):
+                        prefs_on = new
+                    dialog.force_close()
                 old.close()   # through close-request: it stops watching the file
+        if prefs_on and reopen_prefs:   # the preferences come back, now in the new language
+            self.preferences(parent=prefs_on, show="language")
         return False
 
     def shortcuts(self, *a):

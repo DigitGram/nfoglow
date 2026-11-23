@@ -21,7 +21,7 @@ from ui_common import (SUB_SETTINGS, CRT_MASKS, CUSTOM_COLORS, CYCLE_DIRECTIONS,
 class SettingsDialog:
     """Mixed into App. Every row changes one setting through App.change, which saves and shows it everywhere."""
 
-    def preferences(self, *a, show=None):
+    def preferences(self, *a, show=None, parent=None):
         """The dialog with four pages; each row changes its setting at once. show: a setting whose row to bring into
         view and light up briefly (the gear beside a switch in the effects sidebar)."""
         self._rows = {}
@@ -38,7 +38,7 @@ class SettingsDialog:
                 page.add(group)
             d.add(page)
         self.grey_out_dependents()
-        d.present(self.get_active_window())
+        d.present(parent or self.get_active_window())
         row = self._rows.get(show)
         if row is not None:
             d.set_visible_page(row.get_ancestor(Adw.PreferencesPage))
