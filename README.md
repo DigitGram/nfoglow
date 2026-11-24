@@ -39,8 +39,8 @@ NfoGlow paints them as exact pixels, optionally with a soft glow, and keeps the 
 - [What you get](#what-you-get)
 - [Requirements](#requirements)
 - [Install](#install)
-- [Verify the download](#verify-the-download)
 - [Flatpak](#flatpak)
+- [Verify the download](#verify-the-download)
 - [Privacy](#privacy)
 - [Keyboard](#keyboard)
 - [Command line](#command-line)
@@ -87,8 +87,17 @@ Older systems are not supported; the installer stops with an install hint.
 
 ## Install
 
-NfoGlow installs for the current user only. It needs no root and refuses to run under `sudo`. The installer
-downloads exactly the version it belongs to, and releases are [signed](#verify-the-download).
+Three ways, pick one. Releases are [signed](#verify-the-download).
+
+| | For | Installs | Needs |
+| --- | --- | --- | --- |
+| [Install script](#install-script-for-your-user) | any distribution | for your user, `~/.local` | no root |
+| [.deb](#debian-ubuntu-linux-mint-the-deb) | Debian, Ubuntu, Linux Mint | for the whole system | `sudo` |
+| [Flatpak](#flatpak) | any distribution with Flatpak | sandboxed | the Flatpak runtime |
+
+### Install script, for your user
+
+The script needs no root and refuses to run under `sudo`. It downloads exactly the version it belongs to.
 
 Read it first, then run it:
 
@@ -111,6 +120,13 @@ Running the one-line installer of a newer release updates an existing installati
 launcher or icon is missing. NfoGlow opens `.nfo`, `.diz` and `.ans` files when no other program is set for them;
 otherwise choose it once under *Open With*.
 
+To remove it:
+
+```sh
+~/.local/share/nfoglow/install.sh --uninstall   # your settings in ~/.config/nfoglow are kept
+~/.local/share/nfoglow/install.sh --purge       # removes the settings too
+```
+
 ### Debian, Ubuntu, Linux Mint: the .deb
 
 If you would rather not use a terminal: download `nfoglow_<version>_all.deb` from the
@@ -118,18 +134,34 @@ If you would rather not use a terminal: download `nfoglow_<version>_all.deb` fro
 *Install*), or from a terminal:
 
 ```sh
-sudo apt install ./nfoglow_<version>_all.deb   # pulls in GTK 4 and libadwaita; sudo apt remove nfoglow removes it
+sudo apt install ./nfoglow_<version>_all.deb   # pulls in GTK 4 and libadwaita
 ```
 
-The package installs for all users, below `/usr`. It does not replace the per-user install above: use one of them.
+The package installs for all users, below `/usr`. It does not set NfoGlow as the default program for `.nfo` files:
+choose it once under *Open With*. Do not combine it with the install script above: use one of them.
 
-To remove it, run `sudo apt remove nfoglow`. Your settings in `~/.config/nfoglow` are kept; delete that folder too if you want them gone (`apt purge` leaves your home folder alone).
+To remove it, run `sudo apt remove nfoglow`. Your settings in `~/.config/nfoglow` are kept; delete that folder too if
+you want them gone (`apt purge` leaves your home folder alone).
 
-To remove the per-user install:
+### Flatpak
+
+Download `NfoGlow-<version>.flatpak` from the [latest release](https://github.com/DigitGram/nfoglow/releases/latest)
+and open it with a double click, or:
 
 ```sh
-~/.local/share/nfoglow/install.sh --uninstall   # your settings in ~/.config/nfoglow are kept
-~/.local/share/nfoglow/install.sh --purge       # removes the settings too
+flatpak install --user NfoGlow-<version>.flatpak   # fetches the GNOME runtime from Flathub if it is missing
+flatpak run io.github.digitgram.NfoGlow
+```
+
+To remove it, with its settings: `flatpak uninstall --user --delete-data io.github.digitgram.NfoGlow`.
+
+The Flatpak reads your home folder (read-only) so that ← and → can step through the other NFOs of a folder and your
+music folder stays reachable; it writes only where you save an export, and it has sound but no network access.
+The runtime has no tracker music, so the Flatpak builds libopenmpt and the GStreamer plugin for MOD, XM, S3M and IT
+itself. To build it from the sources (the first build takes a few minutes longer):
+
+```sh
+flatpak-builder --user --install --force-clean build flatpak/io.github.digitgram.NfoGlow.yml
 ```
 
 ### Verify the download
@@ -147,15 +179,14 @@ gpg --verify install.sh.asc install.sh
 Run the script only if gpg reports a good signature and the fingerprint matches the one above. The signed script
 names the exact commit it downloads, so the signature covers the program as well, not just the installer.
 
-### Flatpak
-
-`flatpak/io.github.digitgram.NfoGlow.yml` builds a Flatpak on the GNOME 51 runtime. It reads your home folder (read-only)
-so that ← and → can step through the other NFOs of a folder and your music folder stays reachable; it writes only
-where you save an export. The runtime has no tracker music, so the Flatpak builds libopenmpt and the GStreamer
-plugin for MOD, XM, S3M and IT itself (the first build takes a few minutes longer):
+The `.deb` and the Flatpak bundle are listed in `SHA256SUMS`, which is signed too. Download the file you want into
+the same folder as `SHA256SUMS`, then check it (`--ignore-missing` skips the files you did not download):
 
 ```sh
-flatpak-builder --user --install --force-clean build flatpak/io.github.digitgram.NfoGlow.yml
+curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/SHA256SUMS
+curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/SHA256SUMS.asc
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
 ```
 
 ## Privacy
