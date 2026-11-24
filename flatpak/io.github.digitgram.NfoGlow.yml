@@ -12,6 +12,8 @@ finish-args:
   - --socket=wayland
   - --socket=fallback-x11
   - --device=dri
+  # sound for the music (PipeWire answers this socket too); without it the sandbox has no audio output at all
+  - --socket=pulseaudio
   # read-only, for one feature: the arrow keys step through the other NFOs in the folder of the open file.
   # Without it the portal hands over only the opened file. NfoGlow never writes except where you save an export.
   - --filesystem=home:ro
