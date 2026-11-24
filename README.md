@@ -111,7 +111,21 @@ Running the one-line installer of a newer release updates an existing installati
 launcher or icon is missing. NfoGlow opens `.nfo`, `.diz` and `.ans` files when no other program is set for them;
 otherwise choose it once under *Open With*.
 
-To remove it:
+### Debian, Ubuntu, Linux Mint: the .deb
+
+If you would rather not use a terminal: download `nfoglow_<version>_all.deb` from the
+[latest release](https://github.com/DigitGram/nfoglow/releases/latest) and open it with a double click (Software or
+*Install*), or from a terminal:
+
+```sh
+sudo apt install ./nfoglow_<version>_all.deb   # pulls in GTK 4 and libadwaita; sudo apt remove nfoglow removes it
+```
+
+The package installs for all users, below `/usr`. It does not replace the per-user install above: use one of them.
+
+To remove it, run `sudo apt remove nfoglow`. Your settings in `~/.config/nfoglow` are kept; delete that folder too if you want them gone (`apt purge` leaves your home folder alone).
+
+To remove the per-user install:
 
 ```sh
 ~/.local/share/nfoglow/install.sh --uninstall   # your settings in ~/.config/nfoglow are kept

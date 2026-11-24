@@ -13,6 +13,7 @@ jobs:
       - run: shellcheck install.sh tests/install_test.sh
       - run: xvfb-run -a dbus-run-session -- /usr/bin/python3 tests/smoke_gtk.py
       - run: tests/install_test.sh  # here, not in the container below: install.sh refuses root
+      - run: scripts/build-deb.sh "$RUNNER_TEMP" && dpkg-deb -I "$RUNNER_TEMP"/nfoglow_*_all.deb && shellcheck scripts/build-deb.sh
 
   ubuntu-26-04:  # the newest GNOME we support: newer GTK lays out and newer Python behaves differently from the job above
     runs-on: ubuntu-latest
