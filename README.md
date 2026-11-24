@@ -166,28 +166,21 @@ flatpak-builder --user --install --force-clean build flatpak/io.github.digitgram
 
 ### Verify the download
 
-Releases are signed with the key of `digitgram@proton.me`, fingerprint
-`E7AA EB31 A4DE CF99 B314 7E1D FAAB 30B5 FD49 0E93`.
+Every release has a file `SHA256SUMS` with the checksums of `install.sh`, the `.deb` and the Flatpak bundle, and
+`SHA256SUMS.asc`, its GPG signature. The key is the one of `digitgram@proton.me`, fingerprint
+`E7AA EB31 A4DE CF99 B314 7E1D FAAB 30B5 FD49 0E93`. Download the files you want into one folder, then:
 
 ```sh
 curl -fsSL https://github.com/DigitGram.gpg | gpg --import
-curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh
-curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh.asc
-gpg --verify install.sh.asc install.sh
-```
-
-Run the script only if gpg reports a good signature and the fingerprint matches the one above. The signed script
-names the exact commit it downloads, so the signature covers the program as well, not just the installer.
-
-The `.deb` and the Flatpak bundle are listed in `SHA256SUMS`, which is signed too. Download the file you want into
-the same folder as `SHA256SUMS`, then check it (`--ignore-missing` skips the files you did not download):
-
-```sh
 curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/SHA256SUMS
 curl -fsSLO https://github.com/DigitGram/nfoglow/releases/latest/download/SHA256SUMS.asc
 gpg --verify SHA256SUMS.asc SHA256SUMS
-sha256sum -c --ignore-missing SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS   # --ignore-missing skips the files you did not download
 ```
+
+Trust the files only if gpg reports a good signature, the fingerprint matches the one above and `sha256sum` says
+`OK` for each. `install.sh` names the exact commit it downloads, so this covers the program as well, not just the
+installer. (The releases 1.0 and 1.1 have a separate `install.sh.asc` instead: `gpg --verify install.sh.asc install.sh`.)
 
 ## Privacy
 

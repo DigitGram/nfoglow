@@ -13,4 +13,4 @@ Please include what you found, how to reproduce it and which version it affects.
 
 ## Verifying what you download
 
-`install.sh` of every release is signed with GPG (`install.sh.asc`). How to check it is in the README under "Verify the download".
+The files of every release (`install.sh`, the `.deb` and the Flatpak bundle) are covered by a GPG-signed `SHA256SUMS` (`SHA256SUMS.asc`). How to check it is in the README under "Verify the download".
