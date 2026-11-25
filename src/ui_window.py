@@ -558,6 +558,8 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         kind = self.cfg["opening"]
         if short:
             kind = "fade" if kind != "off" else "off"
+            if kind == "fade" and self.view.opening is not None and self.view.opening[0] == "fade":
+                return   # a held arrow key: the running fade goes on, it does not start again at every key repeat
         self.page.reveal = 0.0 if kind == "modem" else None
         self.view.glitch = 0.0 if kind == "glitch" else None
         self.view.opening = (kind, 0.0) if kind in ("crt", "dither", "neon", "rain", "fade") else None
@@ -575,9 +577,12 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
 
     def skip_opening(self):
         """A click or a key ends an effect on opening (not the short glitch). True if one was running."""
+        fading = self.view.opening is not None and self.view.opening[0] == "fade"
         busy = self.loading is not None or self.page.reveal is not None \
-            or (self.view.opening is not None and self.view.opening[0] != "fade")   # the quick fade never swallows a key
-        self.page.reveal, self.view.opening = None, None
+            or (self.view.opening is not None and not fading)   # the quick fade never swallows a key
+        self.page.reveal = None
+        if not fading:   # a fade runs out by itself: cutting it off would leave the page dim, with no frame to redraw it
+            self.view.opening = None
         self._end_loader()
         if busy:
             self.view.queue_draw()
