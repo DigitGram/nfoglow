@@ -23,18 +23,23 @@ CFG = {"theme": "light", "soft": True, "copy_text_only": True}
 def test_a_flatpak_file_from_the_document_portal_gets_its_real_path():
     import os
     with tempfile.TemporaryDirectory() as folder:
-        real = Path(folder, "a.nfo")
-        real.write_text("x")
-        portal = f"/run/user/{os.getuid()}/doc/abcd1234/a.nfo"
-        assert decode.real_path(str(real)) == str(real)   # an ordinary path stays
-        getxattr, os.getxattr = os.getxattr, lambda path, name: str(real).encode()
+        real, portal = Path(folder, "real.nfo"), Path(folder, "doc", "a.nfo")
+        portal.parent.mkdir()
+        real.write_text("same size")
+        portal.write_text("same size")
+        decode.PORTAL_DOCS, getxattr = folder + "/doc/", os.getxattr
         try:
-            assert decode.real_path(portal) == str(real)
-            os.getxattr = lambda path, name: (folder + "/missing.nfo").encode()   # not readable in the sandbox: keep the portal path
-            assert decode.real_path(portal) == portal
+            assert decode.real_path(str(real)) == str(real)   # an ordinary path stays
+            os.getxattr = lambda path, name: str(real).encode() + b"\0"   # with or without a closing NUL
+            assert decode.real_path(str(portal)) == str(real)
+            os.getxattr = lambda path, name: (folder + "/missing.nfo").encode()   # not readable in the sandbox
+            assert decode.real_path(str(portal)) == str(portal)
+            other = Path(folder, "other.nfo")   # the sandbox's own file of that name is not the one that was opened
+            other.write_text("a different size")
+            os.getxattr = lambda path, name: str(other).encode()
+            assert decode.real_path(str(portal)) == str(portal)
         finally:
             os.getxattr = getxattr
-        assert decode.real_path(portal) == portal   # no such portal file here: no attribute, the path stays
 
 
 def test_decode_cp437_and_utf8():

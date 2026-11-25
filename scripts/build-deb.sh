@@ -73,7 +73,7 @@ printf 'nfoglow (%s) unstable; urgency=medium\n\n  * Release %s, see https://git
 chmod 644 "$D/usr/share/doc/nfoglow/changelog.gz"
 
 # DEBIAN/control
-SIZE="$(du -sk --exclude=DEBIAN "$D" | cut -f1)"
+SIZE="$(du -s --apparent-size --block-size=1024 --exclude=DEBIAN "$D" | cut -f1)"
 cat > "$D/DEBIAN/control" <<CONTROL
 Package: nfoglow
 Version: $VERSION
