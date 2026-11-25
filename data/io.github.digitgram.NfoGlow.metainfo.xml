@@ -94,6 +94,11 @@
     <color type="primary" scheme_preference="dark">#1d2340</color>
   </branding>
   <releases>
+    <release version="1.1.2" date="2026-11-25">
+      <description>
+        <p>The effects on opening now start with the first picture, so the tape loader, the modem build-up and the others are no longer a third gone when the window shows. Stepping through a folder with the arrow keys fades the next NFO in instead of playing the opening effect every time.</p>
+      </description>
+    </release>
     <release version="1.1.1" date="2026-11-23">
       <description>
         <p>The window follows the light or dark mode of the desktop, changing the language no longer leaves the old window open, the text-only view splits old Mac line ends, and the effects sidebar is grouped more clearly.</p>
