@@ -13,7 +13,7 @@ import zlib
 import cairo
 from gi.repository import GLib
 
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 APP_ID = "io.github.digitgram.NfoGlow"
 AUTHOR = "DigitGram"
 COPYRIGHT = "© 2026 DigitGram"

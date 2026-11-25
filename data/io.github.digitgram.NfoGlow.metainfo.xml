@@ -94,6 +94,11 @@
     <color type="primary" scheme_preference="dark">#1d2340</color>
   </branding>
   <releases>
+    <release version="1.1.3" date="2026-11-25">
+      <description>
+        <p>In the Flatpak, a file opened from the file manager or the file chooser finds the other NFOs of its folder again, so the arrow keys step through them.</p>
+      </description>
+    </release>
     <release version="1.1.2" date="2026-11-25">
       <description>
         <p>The effects on opening now start with the first picture, so the tape loader, the modem build-up and the others are no longer a third gone when the window shows. Stepping through a folder with the arrow keys fades the next NFO in instead of playing the opening effect every time.</p>
