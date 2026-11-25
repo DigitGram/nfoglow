@@ -14,7 +14,7 @@ import core  # noqa: E402
 import gpu  # noqa: E402
 import music  # noqa: E402
 import overlays  # noqa: E402
-from decode import BROWSE_SUFFIXES, read  # noqa: E402
+from decode import BROWSE_SUFFIXES, read, real_path  # noqa: E402
 from i18n import N_, _  # noqa: E402
 from page import Page, TooBig, fill  # noqa: E402
 from ui_common import ENCODINGS, FILE_ACTIONS, LOOK_CHOICES, LOOK_SHARED, OPENINGS, ZOOM_STEPS  # noqa: E402
@@ -248,6 +248,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         if not path:   # a Gio.File without a local path: a web link dropped from a browser, an sftp:// argument
             self.toast(_("Only files on this computer can be opened."))
             return
+        path = real_path(path)
         try:
             self.data, self.name = read(path)
         except OSError as e:

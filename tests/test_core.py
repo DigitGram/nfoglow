@@ -20,6 +20,23 @@ import i18n  # noqa: E402
 CFG = {"theme": "light", "soft": True, "copy_text_only": True}
 
 
+def test_a_flatpak_file_from_the_document_portal_gets_its_real_path():
+    import os
+    with tempfile.TemporaryDirectory() as folder:
+        real = Path(folder, "a.nfo")
+        real.write_text("x")
+        portal = f"/run/user/{os.getuid()}/doc/abcd1234/a.nfo"
+        assert decode.real_path(str(real)) == str(real)   # an ordinary path stays
+        getxattr, os.getxattr = os.getxattr, lambda path, name: str(real).encode()
+        try:
+            assert decode.real_path(portal) == str(real)
+            os.getxattr = lambda path, name: (folder + "/missing.nfo").encode()   # not readable in the sandbox: keep the portal path
+            assert decode.real_path(portal) == portal
+        finally:
+            os.getxattr = getxattr
+        assert decode.real_path(portal) == portal   # no such portal file here: no attribute, the path stays
+
+
 def test_decode_cp437_and_utf8():
     assert decode.decode(b"\xdb\xdb\xb0 hi")[:2] == ("██░ hi", "CP437")
     assert decode.decode("█ hi".encode())[:2] == ("█ hi", "UTF-8")

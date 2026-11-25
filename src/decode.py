@@ -16,6 +16,19 @@ MAX_ROWS = 10000               # ANSI cursor moves stop here, so a bad file cann
 MAX_CELLS = 2_000_000          # ANSI lines end here: a SAUCE width of 65535 times 10000 rows would fill the memory
 
 
+def real_path(path):
+    """A file opened through the file manager or the file chooser of a Flatpak arrives as /run/user/N/doc/ID/NAME (the
+    document portal), a folder that holds only that file: the arrow keys would find no other NFO. The portal keeps the
+    real path of the file; it is used when the sandbox can read it (the Flatpak has the home folder read-only)."""
+    if not path.startswith(f"/run/user/{os.getuid()}/doc/"):
+        return path
+    try:
+        host = os.getxattr(path, "user.document-portal.host-path").decode()
+    except (OSError, UnicodeDecodeError):
+        return path
+    return host if os.path.isfile(host) else path
+
+
 def decode(data, enc="auto"):
     """bytes -> (text, encoding label, SAUCE width or None).
     Auto: UTF-8 when the bytes are valid UTF-8, else CP437 (the NFO standard)."""
