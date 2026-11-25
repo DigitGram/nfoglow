@@ -32,9 +32,8 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app, default_width=860, default_height=900, title="NfoGlow")
         self.app, self.cfg, self.path, self.data, self.text_only = app, app.cfg, None, None, False
-        self._tick, self._last_frame, self._reveal_from, self._glitch_from = None, 0, None, None   # the frame clock
-        self.loading, self._loading_from, self.boot_kind = None, None, "loader"   # seconds into the tape loader or the
-        self._opening_from = None                                                  # DOS boot on opening, or None
+        self._tick, self._last_frame, self._fx_time = None, 0, 0.0   # the frame clock; seconds into the effect on opening
+        self.loading, self.boot_kind = None, "loader"   # seconds into the tape loader or the DOS boot on opening, or None
         self.name, self._monitor, self._reread_pending = "", None, False
         self.page = Page(self.cfg, self.cfg["zoom"] / 100)
         self.view = View(self.page)
@@ -518,30 +517,30 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         # late: without the margin a tick just under 1/30 s is skipped, the frame comes at 50 ms, and motion stutters
         if t - self._last_frame < 1 / 30 - .004:
             return True
+        # The effect on opening has its own clock, which never moves more than 1/15 s per frame: the first frames of a
+        # window are slow (graphics card, fonts), and by the clock on the wall a third of the effect was gone
+        # before the first picture showed
+        self._fx_time += min(t - self._last_frame, 1 / 15)
         self._last_frame = t
         self.page.time, self.page.level = t, self.app.music_level()
         if self.loading is not None:   # the tape loader or the DOS boot
-            self._loading_from = self._loading_from or t
-            self.loading = t - self._loading_from
+            self.loading = self._fx_time
             self.loader.queue_draw()
             if self.loading >= overlays.opening_end(self.boot_kind, self.name):
                 self._end_loader()
             return True
         opening = self.page.reveal is not None or self.view.glitch is not None or self.view.opening is not None
         if self.page.reveal is not None:   # modem build-up: at least 2400 characters a second, never over 4 s
-            self._reveal_from = self._reveal_from or t
             total = self.page.total_chars()
-            self.page.reveal = (t - self._reveal_from) * max(2400, total / 4)
+            self.page.reveal = self._fx_time * max(2400, total / 4)
             if self.page.reveal >= total:
                 self.page.reveal = None
         if self.view.glitch is not None:
-            self._glitch_from = self._glitch_from or t
-            self.view.glitch = t - self._glitch_from
+            self.view.glitch = self._fx_time
             if self.view.glitch > .7:
                 self.view.glitch = None
         if self.view.opening is not None:   # CRT power-on, dither fade-in, neon flicker-on, code rain
-            self._opening_from = self._opening_from or t
-            kind, seconds = self.view.opening[0], t - self._opening_from
+            kind, seconds = self.view.opening[0], self._fx_time
             self.view.opening = (kind, seconds) if seconds < overlays.opening_end(kind) else None
         opened = opening and self.page.reveal is None and self.view.glitch is None and self.view.opening is None   # ended
         if self._animating_page() or opened:
@@ -559,7 +558,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         self.view.glitch = 0.0 if kind == "glitch" else None
         self.view.opening = (kind, 0.0) if kind in ("crt", "dither", "neon", "rain") else None
         self.loading, self.boot_kind = (0.0 if kind in ("loader", "dos") else None), kind
-        self._reveal_from = self._glitch_from = self._loading_from = self._opening_from = None
+        self._fx_time = 0.0
         self.loader.set_visible(self.loading is not None)
         self.loader.queue_draw()
         self._animate_update()
