@@ -120,7 +120,7 @@ def scroller_letters(w, h, t, text, size):
 
 
 LOADER_END = 2.4   # seconds of the tape loader on opening
-OPENING_END = {"loader": LOADER_END, "crt": 1.1, "dither": 1.6, "neon": 1.7, "rain": 2.4}   # seconds of the other effects
+OPENING_END = {"loader": LOADER_END, "crt": 1.1, "dither": 1.6, "neon": 1.7, "rain": 2.4, "fade": .3}   # seconds of the other effects
 def opening_end(kind, name=""):
     """How many seconds the effect on opening runs (the DOS boot has a script of its own)."""
     if kind != "dos":

@@ -264,6 +264,12 @@ def view(page, snap, w, h, sx, sy, ox, scale, glitch, star_cache, grid=(0.0, 0.0
         scene = Gtk.Snapshot()
         _scene(page, scene, w, h, sx, sy, ox, scale, glitch, star_cache, grid, None)
         _power_on(out, scene.to_node(), w, h, opening[1], scale)
+    elif opening and opening[0] == "fade":   # stepping to the next NFO: it fades in over the page colour
+        out.append_color(rgba(page._colors()[0]), rect(0, 0, w, h))
+        u = min(1.0, opening[1] / OPENING_END["fade"])
+        out.push_opacity(u * (2 - u))
+        _scene(page, out, w, h, sx, sy, ox, scale, glitch, star_cache, grid, None)
+        out.pop()
     else:
         _scene(page, out, w, h, sx, sy, ox, scale, glitch, star_cache, grid, opening)
     if not (chroma or mask):

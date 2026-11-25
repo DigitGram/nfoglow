@@ -244,7 +244,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
 
     # ------------------------------------------------------------ file
 
-    def load(self, path, resize=True, remember=True):
+    def load(self, path, resize=True, remember=True, browsing=False):
         if not path:   # a Gio.File without a local path: a web link dropped from a browser, an sftp:// argument
             self.toast(_("Only files on this computer can be opened."))
             return
@@ -263,7 +263,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         self.view.grab_focus()
         self.scroller.get_vadjustment().set_value(0)
         if not self.text_only:
-            self.start_opening()
+            self.start_opening(short=browsing)
         if resize and not self._fitting():   # with "fit width" the window decides the zoom, not the other way round
             self._size_to_page()
 
@@ -317,7 +317,7 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
         files = self._siblings()
         i = files.index(self.path) + step if self.path in files else -1
         if 0 <= i < len(files):
-            self.load(files[i], resize=False)   # a jumping window while browsing would be annoying
+            self.load(files[i], resize=False, browsing=True)   # a jumping window while browsing would be annoying
         else:
             self.error_bell()
 
@@ -551,12 +551,15 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
             self._animate_update()   # the build-up or glitch is over: maybe nothing moves any more
         return True
 
-    def start_opening(self):
-        """Start the effect chosen for opening a file."""
+    def start_opening(self, short=False):
+        """Start the effect chosen for opening a file. short: stepping through a folder with the arrow keys, where
+        the long effects would play at every key: the NFO just fades in (and nothing, when no effect is set)."""
         kind = self.cfg["opening"]
+        if short:
+            kind = "fade" if kind != "off" else "off"
         self.page.reveal = 0.0 if kind == "modem" else None
         self.view.glitch = 0.0 if kind == "glitch" else None
-        self.view.opening = (kind, 0.0) if kind in ("crt", "dither", "neon", "rain") else None
+        self.view.opening = (kind, 0.0) if kind in ("crt", "dither", "neon", "rain", "fade") else None
         self.loading, self.boot_kind = (0.0 if kind in ("loader", "dos") else None), kind
         self._fx_time = 0.0
         self.loader.set_visible(self.loading is not None)
@@ -571,7 +574,8 @@ class Window(EffectsSidebar, Adw.ApplicationWindow):
 
     def skip_opening(self):
         """A click or a key ends an effect on opening (not the short glitch). True if one was running."""
-        busy = self.loading is not None or self.page.reveal is not None or self.view.opening is not None
+        busy = self.loading is not None or self.page.reveal is not None \
+            or (self.view.opening is not None and self.view.opening[0] != "fade")   # the quick fade never swallows a key
         self.page.reveal, self.view.opening = None, None
         self._end_loader()
         if busy:
