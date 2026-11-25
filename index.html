@@ -156,6 +156,20 @@ h2{margin:0 0 14px;color:var(--white);font-size:clamp(30px,4vw,44px);line-height
 .plat li{margin:.35em 0}
 .plat li b{color:var(--tagline)}
 .plat .btn{align-self:flex-start;margin-top:auto}
+/* the three ways to install on Linux: tabs when the script runs, all three stacked without it */
+.ways{display:flex;flex-direction:column;gap:18px}
+.way{display:flex;flex-direction:column;gap:10px}
+.way-title{margin:0;color:var(--white);font-size:17px}
+.way p{font-size:16px}
+.way p code{font-size:.9em}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button{padding:7px 15px;border-radius:999px;border:1px solid var(--panel-line);background:rgba(255,255,255,.05);color:var(--sub);font:700 14px Lato,sans-serif;cursor:pointer}
+.tabs button:hover{background:rgba(255,255,255,.1);color:var(--white)}
+.tabs button[aria-selected=true]{background:rgba(74,163,255,.2);border-color:rgba(74,163,255,.6);color:#fff}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ways.js .way-title{display:none}
+.ways.js .way[hidden]{display:none}
+.code.plain{padding-right:20px}
 .codewrap{position:relative}
 .code{background:#05071a;border:1px solid var(--panel-line);border-radius:14px;padding:18px 74px 18px 20px;
   font:400 14.5px/1.55 ui-monospace,"JetBrains Mono","DejaVu Sans Mono",monospace;color:#d4defa;overflow-x:auto;white-space:pre}
@@ -294,14 +308,30 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
 
       <div class="plat">
         <h3>Linux</h3>
-        <p>Python 3 with GTK 4 and libadwaita 1.5 or newer (GNOME 46+). Installs for the current user, no root.</p>
-        <div class="codewrap">
-          <div class="code">curl -fsSL https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh | bash</div>
-          <button class="copy" type="button" aria-label="Copy the install command">Copy</button>
+        <p>Three ways, pick one. Every release has signed checksums.</p>
+        <div class="ways">
+          <div class="way">
+            <h4 class="way-title">Install script</h4>
+            <p>Any distribution. Installs for your user, no root. Needs Python 3 with GTK 4 and libadwaita 1.5 or newer (GNOME 46+).</p>
+            <div class="codewrap">
+              <div class="code">curl -fsSL https://github.com/DigitGram/nfoglow/releases/latest/download/install.sh | bash</div>
+              <button class="copy" type="button" aria-label="Copy the install command">Copy</button>
+            </div>
+          </div>
+          <div class="way">
+            <h4 class="way-title">.deb</h4>
+            <p>Debian, Ubuntu and Linux Mint. Installs for all users and pulls in GTK 4 and libadwaita. Download <code>nfoglow_&lt;version&gt;_all.deb</code> from the <a href="https://github.com/DigitGram/nfoglow/releases/latest">latest release</a>, double-click it or:</p>
+            <div class="code plain">sudo apt install ./nfoglow_&lt;version&gt;_all.deb</div>
+          </div>
+          <div class="way">
+            <h4 class="way-title">Flatpak</h4>
+            <p>Any distribution with Flatpak. Sandboxed, with sound but no network access. Download <code>NfoGlow-&lt;version&gt;.flatpak</code> from the <a href="https://github.com/DigitGram/nfoglow/releases/latest">latest release</a>, double-click it or:</p>
+            <div class="code plain">flatpak install --user NfoGlow-&lt;version&gt;.flatpak
+flatpak run io.github.digitgram.NfoGlow</div>
+          </div>
         </div>
         <ul>
           <li>Opens <code>.nfo</code>, <code>.diz</code> and <code>.ans</code> files. Choose it once under <i>Open With</i> if another program is set.</li>
-          <li>A Flatpak recipe is included in the repository.</li>
           <li>No network connections of its own.</li>
         </ul>
         <a class="btn" href="https://github.com/DigitGram/nfoglow">NfoGlow for Linux on GitHub</a>
@@ -320,7 +350,7 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
       </div>
 
     </div>
-    <p class="note">Both are free software under the GPL-3.0-or-later. Releases are signed: the Linux installer, and the checksums of the Windows setup. The README of each has the fingerprint and the steps to check it.</p>
+    <p class="note">Both are free software under the GPL-3.0-or-later. Every release comes with a signed checksum file (<code>SHA256SUMS</code> and its GPG signature) that covers the install script, the .deb, the Flatpak and the Windows setup. The README of each has the fingerprint and the steps to check it.</p>
   </div>
 </section>
 </main>
@@ -421,6 +451,27 @@ dialog.lightbox::backdrop{background:rgba(5,7,20,.93)}
     lb.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') open(at - 1); else if (e.key === 'ArrowRight') open(at + 1);
     });
+  }
+  var ways = document.querySelector('.ways');   /* tabs for the three ways to install on Linux */
+  if (ways) {
+    var panels = [].slice.call(ways.querySelectorAll('.way')), bar = document.createElement('div'), tabs = [];
+    bar.className = 'tabs'; bar.setAttribute('role', 'tablist'); bar.setAttribute('aria-label', 'Ways to install on Linux');
+    var pick = function (i) {
+      tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
+      panels.forEach(function (p, k) { p.hidden = k !== i; });
+    };
+    panels.forEach(function (p, i) {
+      var t = document.createElement('button');
+      t.type = 'button'; t.setAttribute('role', 'tab'); t.textContent = p.querySelector('.way-title').textContent;
+      t.addEventListener('click', function () { pick(i); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        var j = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        pick(j); tabs[j].focus(); e.preventDefault();
+      });
+      tabs.push(t); bar.appendChild(t);
+    });
+    ways.insertBefore(bar, ways.firstChild); ways.classList.add('js'); pick(0);
   }
   document.querySelectorAll('.copy').forEach(function (b) {
     b.addEventListener('click', function () {
