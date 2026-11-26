@@ -22,17 +22,20 @@ class SettingsDialog:
     """Mixed into App. Every row changes one setting through App.change, which saves and shows it everywhere."""
 
     def preferences(self, *a, show=None, parent=None):
-        """The dialog with four pages; each row changes its setting at once. show: a setting whose row to bring into
+        """The dialog with four pages (five with Updates: a Flatpak updates through its store, so it has none); each row changes its setting at once. show: a setting whose row to bring into
         view and light up briefly (the gear beside a switch in the effects sidebar)."""
         self._rows = {}
         d = Adw.PreferencesDialog(title=_("Preferences"))   # else libadwaita titles it in the system language
         surprise, glow, colors, motion, logo, scroll, opening, retro, edges = self._effects()
         behave, reset = self._behavior(d)
         # General first (the dialog opens there): behavior, look, and the reset at the very end
-        for title, icon, groups in ((_("General"), "preferences-system-symbolic", (behave, *self._appearance(), *self._updates(), reset)),
+        for title, icon, groups in ((_("General"), "preferences-system-symbolic", (behave, *self._appearance(), reset)),
                                     (_("Effects"), "preferences-color-symbolic", (surprise, glow, colors, edges, retro)),
                                     (_("Animation"), "media-playback-start-symbolic", (motion, logo, scroll, opening)),
-                                    (_("Music"), "audio-x-generic-symbolic", (self._music(),))):
+                                    (_("Music"), "audio-x-generic-symbolic", (self._music(),)),
+                                    (_("Updates"), "software-update-available-symbolic", self._updates())):
+            if not groups:
+                continue
             page = Adw.PreferencesPage(title=title, icon_name=icon)
             for group in groups:
                 page.add(group)
