@@ -47,8 +47,9 @@
     </ul>
   </description>
   <launchable type="desktop-id">io.github.digitgram.NfoGlow.desktop</launchable>
-  <url type="homepage">https://github.com/DigitGram/nfoglow</url>
+  <url type="homepage">https://digitgram.github.io/nfoglow/</url>
   <url type="bugtracker">https://github.com/DigitGram/nfoglow/issues</url>
+  <url type="translate">https://github.com/DigitGram/nfoglow/issues/new?template=translation.yml</url>
   <url type="vcs-browser">https://github.com/DigitGram/nfoglow</url>
   <screenshots>
     <screenshot type="default">
