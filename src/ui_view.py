@@ -13,6 +13,8 @@ from gi.repository import GLib, GObject, Graphene, Gtk  # noqa: E402
 
 import gpu  # noqa: E402
 
+EDGE = 32   # px inside the view's edge where dragging a selection already scrolls
+
 
 class View(Gtk.Widget, Gtk.Scrollable):
     """Shows the page; selection by dragging, links by clicking.
@@ -30,7 +32,7 @@ class View(Gtk.Widget, Gtk.Scrollable):
         self.page = page
         for name in ("hadjustment", "vadjustment"):
             self.connect(f"notify::{name}", self._adjustment_set)
-        self._scroll, self._overshoot = None, (0, 0, None)
+        self._scroll, self._overshoot = None, (0, 0, 0, 0)
         self.glitch = None   # seconds into the glitch on open, or None
         self.opening = None  # (effect, seconds) while the CRT power-on, dither fade-in, neon flicker-on or code rain runs
         self._stars = {}     # the starfield images for the current window size
@@ -141,12 +143,22 @@ class View(Gtk.Widget, Gtk.Scrollable):
 
     def _update(self, g, dx, dy):
         _ok, x, y = g.get_start_point()
-        self._select_to(x + dx, y + dy)
-        # past the top or bottom edge of the window: keep scrolling (and selecting) while the pointer stays there
-        adj = self.vadjustment
-        above, below = -(y + dy), (y + dy) - self.get_height()
-        self._overshoot = (x + dx, -above if above > 0 else below if below > 0 else 0, adj)
-        if self._overshoot[1] and self._scroll is None:
+        x, y = x + dx, y + dy
+        self._select_to(x, y)
+        # near or past an edge of the view (left and right only matter when zoomed in): keep scrolling (and
+        # selecting) while the pointer stays there. The zone inside the edge is for a maximized window, whose
+        # bottom edge is the screen's: the pointer cannot get past it. A drag only scrolls towards where it goes,
+        # so one that starts near an edge and moves away does not scroll first; a click (under 4 px) never does.
+        def past(v, size, moved):
+            if abs(moved) < 4:
+                return 0
+            if v < EDGE and (v < 0 or moved < 0):
+                return v - EDGE
+            if v > size - EDGE and (v > size or moved > 0):
+                return v - (size - EDGE)
+            return 0
+        self._overshoot = (x, y, past(x, self.get_width(), dx), past(y, self.get_height(), dy))
+        if (self._overshoot[2] or self._overshoot[3]) and self._scroll is None:
             self._scroll = GLib.timeout_add(30, self._autoscroll)
 
     def _select_to(self, x, y):
@@ -154,17 +166,23 @@ class View(Gtk.Widget, Gtk.Scrollable):
         self.queue_draw()
 
     def _autoscroll(self):
-        x, distance, adj = self._overshoot
-        if not distance:
+        x, y, out_x, out_y = self._overshoot
+        if not out_x and not out_y:
             self._scroll = None
             return False
-        step = max(-60, min(60, distance / 2))   # the further out, the faster, up to 60 px per tick
-        adj.set_value(adj.get_value() + step)
-        self._select_to(x, (self.get_height() if step > 0 else 0) + step)
+        point = []
+        for adj, pos, out, size in ((self.hadjustment, x, out_x, self.get_width()),
+                                    (self.vadjustment, y, out_y, self.get_height())):
+            if out:
+                step = max(-60, min(60, out / 3))   # the closer to the edge and beyond, the faster, up to 60 px per tick
+                if adj is not None:
+                    adj.set_value(adj.get_value() + step)
+            point.append(min(max(pos, 0), size))   # select up to the edge of what is shown, not beyond it
+        self._select_to(*point)
         return True
 
     def _end(self, _g, dx, dy):
-        self._overshoot = (0, 0, None)   # stops the auto-scroll
+        self._overshoot = (0, 0, 0, 0)   # stops the auto-scroll
         if abs(dx) < 4 and abs(dy) < 4:   # a click, not a drag
             self.page.sel = None
             self.queue_draw()
