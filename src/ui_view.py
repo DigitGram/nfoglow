@@ -138,6 +138,8 @@ class View(Gtk.Widget, Gtk.Scrollable):
     def _begin(self, _g, x, y):
         if hasattr(self.get_root(), "skip_opening"):   # a click ends an effect on opening
             self.get_root().skip_opening()
+        if self._scroll is not None:   # the last drag's timer can still be pending: two would scroll twice as fast
+            GLib.source_remove(self._scroll)
         self._start, self._scroll = self.cell(x, y), None
         self.grab_focus()
 
@@ -170,14 +172,17 @@ class View(Gtk.Widget, Gtk.Scrollable):
         if not out_x and not out_y:
             self._scroll = None
             return False
-        point = []
+        point, moved = [], False
         for adj, pos, out, size in ((self.hadjustment, x, out_x, self.get_width()),
                                     (self.vadjustment, y, out_y, self.get_height())):
-            if out:
-                step = max(-60, min(60, out / 3))   # the closer to the edge and beyond, the faster, up to 60 px per tick
-                if adj is not None:
-                    adj.set_value(adj.get_value() + step)
+            if out and adj is not None:
+                before = adj.get_value()
+                adj.set_value(before + max(-60, min(60, out / 3)))   # the closer to the edge and beyond, the faster, up to 60 px per tick
+                moved = moved or adj.get_value() != before
             point.append(min(max(pos, 0), size))   # select up to the edge of what is shown, not beyond it
+        if not moved:   # nothing left to scroll (a page that fits, or its end): no redrawing 33 times a second; a move of the pointer starts it again
+            self._scroll = None
+            return False
         self._select_to(*point)
         return True
 
