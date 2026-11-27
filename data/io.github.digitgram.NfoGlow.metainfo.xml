@@ -95,6 +95,11 @@
     <color type="primary" scheme_preference="dark">#1d2340</color>
   </branding>
   <releases>
+    <release version="1.1.5" date="2026-11-27">
+      <description>
+        <p>Selecting text by dragging now scrolls along when the pointer gets close to the edge of the window, also in a maximized window; before it only scrolled once the pointer was outside of it. Updates have their own page in the preferences.</p>
+      </description>
+    </release>
     <release version="1.1.4" date="2026-11-25">
       <description>
         <p>Stepping through a folder with the arrow keys no longer leaves the page dim: a key press during the fade, or a held arrow key, used to cut it off or restart it. A file opened from the file manager in the Flatpak is matched to its real folder more carefully.</p>
